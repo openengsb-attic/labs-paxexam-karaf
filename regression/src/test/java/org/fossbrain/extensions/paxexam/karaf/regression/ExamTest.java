@@ -1,4 +1,4 @@
-package test;
+package org.fossbrain.extensions.paxexam.karaf.regression;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

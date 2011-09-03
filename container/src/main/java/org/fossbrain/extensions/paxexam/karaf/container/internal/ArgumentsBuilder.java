@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ops4j.pax.exam.container.def.internal;
+package org.fossbrain.extensions.paxexam.karaf.container.internal;
 
 import static org.ops4j.pax.exam.CoreOptions.scanBundle;
 
