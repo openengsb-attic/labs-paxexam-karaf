@@ -225,7 +225,7 @@ public class KarafTestContainer implements TestContainer {
         File customPropertiesFile = new File(karafHome + "/etc/org.ops4j.pax.logging.cfg");
         Properties karafPropertyFile = new Properties();
         karafPropertyFile.load(new FileInputStream(customPropertiesFile));
-        karafPropertyFile.put("log4j.rootLogger", "DEBUG, out, osgi:*");
+        karafPropertyFile.put("log4j.rootLogger", "DEBUG, out, stdout, osgi:*");
         karafPropertyFile.store(new FileOutputStream(customPropertiesFile), "updated by pax-exam");
     }
 
