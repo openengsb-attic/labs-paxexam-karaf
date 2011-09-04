@@ -133,6 +133,7 @@ public class KarafTestContainer implements TestContainer {
 
             File javaHome = new File(System.getProperty("java.home"));
             File karafBase = searchKarafBase(targetFolder);
+            File featuresXmlFile = new File(targetFolder + "/examfeatures.xml");
             File karafHome = karafBase;
             String karafData = karafHome + "/data";
             File deployFolder = new File(karafBase + "/deploy");
@@ -153,24 +154,39 @@ public class KarafTestContainer implements TestContainer {
             updateKarafProperties(karafHome, m_subsystem);
             updateLogProperties(karafBase, m_subsystem);
 
-            FileUtils.copyURLToFile(
-                new URL("mvn:org.ops4j.pax.exam/pax-exam-container-rbc/" + Info.getPaxExamVersion()), new File(
-                    deployFolder + "/pax-exam-container-rbc.jar"));
-            FileUtils.copyURLToFile(
-                new URL("mvn:org.ops4j.pax.exam/pax-exam/" + Info.getPaxExamVersion()), new File(
-                    deployFolder + "/pax-exam.jar"));
-            FileUtils.copyURLToFile(
-                new URL("mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/" + Info.getPaxExamVersion()), new File(
-                    deployFolder + "/pax-exam-invoker-junit.jar"));
-            FileUtils.copyURLToFile(
-                new URL("mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion()), new File(
-                    deployFolder + "/pax-exam-inject.jar"));
-            FileUtils.copyURLToFile(
-                new URL("mvn:org.ops4j.pax.exam/pax-exam-util/" + Info.getPaxExamVersion()), new File(
-                    deployFolder + "/pax-exam-util.jar"));
-            FileUtils.copyURLToFile(
-                new URL("mvn:org.ops4j.pax.exam/pax-exam-extender-service/" + Info.getPaxExamVersion()), new File(
-                    deployFolder + "/pax-exam-extender-service.jar"));
+            String featuresXml =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                        + "<features name=\"pax-exam-features-"
+                        + Info.getPaxExamVersion()
+                        + "\">\n"
+                        + "<feature name=\"exam\" version=\""
+                        + Info.getPaxExamVersion()
+                        + "\">\n"
+                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam/"
+                        + Info.getPaxExamVersion()
+                        + "</bundle>\n"
+                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-container-rbc/"
+                        + Info.getPaxExamVersion()
+                        + "</bundle>\n"
+                        // + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/" + Info.getPaxExamVersion() +
+                        // "</bundle>\n"
+                        + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/1_1</bundle>\n"
+                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion() + "</bundle>\n"
+                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-util/" + Info.getPaxExamVersion() + "</bundle>\n"
+                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-extender-service/" + Info.getPaxExamVersion()
+                        + "</bundle>\n"
+                        + "</feature>\n"
+                        + "</features>";
+
+            FileUtils.writeStringToFile(featuresXmlFile, featuresXml);
+
+            File featuresCfgFile = new File(karafHome + "/etc/org.apache.karaf.features.cfg");
+            Properties featureProperties = new Properties();
+            featureProperties.load(new FileInputStream(featuresCfgFile));
+            featureProperties.put("featuresRepositories", featureProperties.get("featuresRepositories") + ",file:"
+                    + featuresXmlFile);
+            featureProperties.put("featuresBoot", featureProperties.get("featuresBoot") + ",exam");
+            featureProperties.store(new FileOutputStream(featuresCfgFile), "Modified by paxexam");
 
             long startedAt = System.currentTimeMillis();
 
