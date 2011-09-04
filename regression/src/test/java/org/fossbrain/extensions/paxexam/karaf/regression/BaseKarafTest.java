@@ -11,7 +11,7 @@ import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
-public class ExamTest {
+public class BaseKarafTest {
 
     @Configuration
     public Option[] config() {
