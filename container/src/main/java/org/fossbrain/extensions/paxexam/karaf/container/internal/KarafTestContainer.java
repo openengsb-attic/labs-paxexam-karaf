@@ -162,23 +162,40 @@ public class KarafTestContainer implements TestContainer {
                         + "<feature name=\"exam\" version=\""
                         + Info.getPaxExamVersion()
                         + "\">\n"
-                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam/"
+                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-util/"
+                        + Info.getPaxExamVersion()
+                        + "</bundle>\n"
+                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-extender-service/"
                         + Info.getPaxExamVersion()
                         + "</bundle>\n"
                         + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-container-rbc/"
                         + Info.getPaxExamVersion()
                         + "</bundle>\n"
-                        // + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/" + Info.getPaxExamVersion() +
-                        // "</bundle>\n"
+                        + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.junit/4.7_3</bundle>\n"
+                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/"
+                        + Info.getPaxExamVersion()
+                        +
+                        "</bundle>\n"
                         + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/1_1</bundle>\n"
                         + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion() + "</bundle>\n"
-                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-util/" + Info.getPaxExamVersion() + "</bundle>\n"
-                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-extender-service/" + Info.getPaxExamVersion()
-                        + "</bundle>\n"
                         + "</feature>\n"
                         + "</features>";
 
             FileUtils.writeStringToFile(featuresXmlFile, featuresXml);
+
+            try {
+                File backupDir = createTempDirectory();
+                FileUtils.copyDirectory(targetFolder, backupDir);
+                File featuresCfgFile = new File(backupDir + "/etc/org.apache.karaf.features.cfg");
+                Properties featureProperties = new Properties();
+                featureProperties.load(new FileInputStream(featuresCfgFile));
+                featureProperties.put("featuresRepositories", featureProperties.get("featuresRepositories") + ",file:"
+                        + new File(backupDir + "/examfeatures.xml"));
+                featureProperties.put("featuresBoot", featureProperties.get("featuresBoot") + ",exam");
+                featureProperties.store(new FileOutputStream(featuresCfgFile), "Modified by paxexam");
+            } catch (Exception e) {
+                throw new IllegalArgumentException("backup was not possible", e);
+            }
 
             File featuresCfgFile = new File(karafHome + "/etc/org.apache.karaf.features.cfg");
             Properties featureProperties = new Properties();
@@ -225,7 +242,7 @@ public class KarafTestContainer implements TestContainer {
         File customPropertiesFile = new File(karafHome + "/etc/org.ops4j.pax.logging.cfg");
         Properties karafPropertyFile = new Properties();
         karafPropertyFile.load(new FileInputStream(customPropertiesFile));
-        karafPropertyFile.put("log4j.rootLogger", "DEBUG, out, stdout, osgi:*");
+        karafPropertyFile.put("log4j.rootLogger", "WARN, out, stdout, osgi:*");
         karafPropertyFile.store(new FileOutputStream(customPropertiesFile), "updated by pax-exam");
     }
 
@@ -343,6 +360,21 @@ public class KarafTestContainer implements TestContainer {
             m_system.clear();
         }
         return this;
+    }
+
+    private static File createTempDirectory() throws IOException
+    {
+        final File temp;
+        temp = File.createTempFile("examkarafbackup", Long.toString(System.nanoTime()));
+        if (!temp.delete())
+        {
+            throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
+        }
+        if (!temp.mkdir())
+        {
+            throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
+        }
+        return temp;
     }
 
     /**
