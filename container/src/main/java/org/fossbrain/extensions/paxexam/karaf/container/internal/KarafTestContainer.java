@@ -129,8 +129,6 @@ public class KarafTestContainer implements TestContainer {
             File targetFolder = m_subsystem.getTempFolder();
             extractKarafDistribution(sourceDistribution, targetFolder);
 
-            // TODO: adapt those values
-
             File javaHome = new File(System.getProperty("java.home"));
             File karafBase = searchKarafBase(targetFolder);
             File featuresXmlFile = new File(targetFolder + "/examfeatures.xml");
@@ -149,61 +147,17 @@ public class KarafTestContainer implements TestContainer {
             String options = "";
             String[] environment = new String[]{};
 
-            // TODO: update karaf options in etc
-
             updateKarafProperties(karafHome, m_subsystem);
             updateLogProperties(karafBase, m_subsystem);
 
-            String featuresXml =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                        + "<features name=\"pax-exam-features-"
-                        + Info.getPaxExamVersion()
-                        + "\">\n"
-                        + "<feature name=\"exam\" version=\""
-                        + Info.getPaxExamVersion()
-                        + "\">\n"
-                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-util/"
-                        + Info.getPaxExamVersion()
-                        + "</bundle>\n"
-                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-extender-service/"
-                        + Info.getPaxExamVersion()
-                        + "</bundle>\n"
-                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-container-rbc/"
-                        + Info.getPaxExamVersion()
-                        + "</bundle>\n"
-                        + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.junit/4.7_3</bundle>\n"
-                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/"
-                        + Info.getPaxExamVersion()
-                        +
-                        "</bundle>\n"
-                        + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/1_1</bundle>\n"
-                        + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion() + "</bundle>\n"
-                        + "</feature>\n"
-                        + "</features>";
+            ExamFeaturesFile examFeaturesFile = new ExamFeaturesFile();
+            examFeaturesFile.writeToFile(featuresXmlFile);
 
-            FileUtils.writeStringToFile(featuresXmlFile, featuresXml);
+            File backupDir = createTempDirectory();
+            FileUtils.copyDirectory(targetFolder, backupDir);
 
-            try {
-                File backupDir = createTempDirectory();
-                FileUtils.copyDirectory(targetFolder, backupDir);
-                File featuresCfgFile = new File(backupDir + "/etc/org.apache.karaf.features.cfg");
-                Properties featureProperties = new Properties();
-                featureProperties.load(new FileInputStream(featuresCfgFile));
-                featureProperties.put("featuresRepositories", featureProperties.get("featuresRepositories") + ",file:"
-                        + new File(backupDir + "/examfeatures.xml"));
-                featureProperties.put("featuresBoot", featureProperties.get("featuresBoot") + ",exam");
-                featureProperties.store(new FileOutputStream(featuresCfgFile), "Modified by paxexam");
-            } catch (Exception e) {
-                throw new IllegalArgumentException("backup was not possible", e);
-            }
-
-            File featuresCfgFile = new File(karafHome + "/etc/org.apache.karaf.features.cfg");
-            Properties featureProperties = new Properties();
-            featureProperties.load(new FileInputStream(featuresCfgFile));
-            featureProperties.put("featuresRepositories", featureProperties.get("featuresRepositories") + ",file:"
-                    + featuresXmlFile);
-            featureProperties.put("featuresBoot", featureProperties.get("featuresBoot") + ",exam");
-            featureProperties.store(new FileOutputStream(featuresCfgFile), "Modified by paxexam");
+            examFeaturesFile.adaptDistributionToStartExam(backupDir, featuresXmlFile);
+            examFeaturesFile.adaptDistributionToStartExam(karafHome, featuresXmlFile);
 
             long startedAt = System.currentTimeMillis();
 
