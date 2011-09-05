@@ -26,18 +26,22 @@ org.fossbrain.extensions.paxexam.karaf/container as your container instead of na
 
 From that point on there are minor differences. The extension tries to support the configuration options available 
 via PAXEXAM itself as good as possible. Still there are various additional configurations and some are handled 
-a little bit differently than in a "regular" PAXEXAM environment. The following list describes the various options:
+a little bit differently than in a "regular" PAXEXAM environment. The full usage of the framework could be
+found in the [https://github.com/fossbrain/org.fossbrain.extensions.paxexam.karaf/wiki](Github Wiki Pages).
 
-### CustomFrameworkOption
+## License
 
-The framework itself is non of the typical runtimes you define normally in PAXEXAM. Instead you define a packed
-distribution as zip or tar.gz. Those distributions have to follow the Karaf packaging style. Therefore instead
-of Karaf you can also enter Servicemix or the OpenEngSB.
+The entire source code is licensend under the Apache 2 License and is therefore free to be used in commercial
+projects.
 
-<pre>
-new CustomFrameworkOption(
-  "mvn:org.apache.karaf/apache-karaf/2.2.3/zip", // artifact to unpack and use
-  "karaf", // name; display only
-  "karaf-2.2.3") // full name; also only for displaying
-</pre>
+## Build
+
+To build the project simply checkout the latest master or tag and do a `maven install`.
+
+## Contribute
+
+Contributions are always welcomed in every form (documentation, ideas or code). For ideas or problems please
+simply use the [https://github.com/fossbrain/org.fossbrain.extensions.paxexam.karaf/issues](Github Issue Tracker).
+For documentation the [https://github.com/fossbrain/org.fossbrain.extensions.paxexam.karaf/wiki](Github Wiki Pages) 
+and for code the Github Pull Request mechanism.
 
