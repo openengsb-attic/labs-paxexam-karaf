@@ -34,8 +34,10 @@ The framework itself is non of the typical runtimes you define normally in PAXEX
 distribution as zip or tar.gz. Those distributions have to follow the Karaf packaging style. Therefore instead
 of Karaf you can also enter Servicemix or the OpenEngSB.
 
+<pre>
 new CustomFrameworkOption(
   "mvn:org.apache.karaf/apache-karaf/2.2.3/zip", // artifact to unpack and use
   "karaf", // name; display only
   "karaf-2.2.3") // full name; also only for displaying
+</pre>
 
