@@ -15,4 +15,12 @@ public final class KarafDistributionOption {
         return new KarafDistributionConfigurationOption(frameworkURL, name, karafVersion);
     }
 
+    public static Option editConfigurationFilePut(String configurationFilePath, String key, String value) {
+        return new KarafDistributionConfigurationFilePutOption(configurationFilePath, key, value);
+    }
+
+    public static Option editConfigurationFileExtend(String configurationFilePath, String key, String value) {
+        return new KarafDistributionConfigurationFileExtendOption(configurationFilePath, key, value);
+    }
+
 }
