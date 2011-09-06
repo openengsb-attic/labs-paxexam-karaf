@@ -35,6 +35,11 @@
       <artifactId>pax-exam</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.openengsb.extensions.paxexam.karaf</groupId>
+      <artifactId>options</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.ops4j.pax.exam</groupId>
       <artifactId>pax-exam-container-remote</artifactId>
     </dependency>

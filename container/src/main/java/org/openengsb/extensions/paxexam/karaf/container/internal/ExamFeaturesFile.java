@@ -19,6 +19,8 @@ package org.openengsb.extensions.paxexam.karaf.container.internal;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.ops4j.pax.exam.Info;
@@ -50,10 +52,30 @@ public class ExamFeaturesFile {
                     + Info.getPaxExamVersion()
                     +
                     "</bundle>\n"
+                    + "<bundle>mvn:org.openengsb.extensions.paxexam.karaf/options/"
+                    + getOptionsVersion()
+                    + "</bundle>\n"
                     + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/1_1</bundle>\n"
                     + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion() + "</bundle>\n"
                     + "</feature>\n"
                     + "</features>";
+    }
+
+    private String getOptionsVersion() {
+        String optionsVersion = "";
+        try {
+            final InputStream is = ExamFeaturesFile.class.getClassLoader().getResourceAsStream(
+                "META-INF/versions.properties"
+                );
+            if (is != null) {
+                final Properties properties = new Properties();
+                properties.load(is);
+                optionsVersion = properties.getProperty("options.version", "").trim();
+            }
+        } catch (Exception ignore) {
+            // use default versions
+        }
+        return optionsVersion;
     }
 
     public void writeToFile(File featuresXmlFile) throws IOException {

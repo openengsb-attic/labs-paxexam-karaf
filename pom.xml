@@ -3,6 +3,12 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.openengsb</groupId>
+    <artifactId>openengsb-root</artifactId>
+    <version>20</version>
+  </parent>
+
   <groupId>org.openengsb.extensions.paxexam.karaf</groupId>
   <artifactId>karaf</artifactId>
   <version>0.1.0-SNAPSHOT</version>
@@ -18,6 +24,7 @@
   </properties>
 
   <modules>
+    <module>options</module>
     <module>container</module>
     <module>regression</module>
   </modules>
