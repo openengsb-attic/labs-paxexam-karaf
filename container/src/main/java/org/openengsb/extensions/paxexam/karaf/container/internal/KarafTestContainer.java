@@ -46,7 +46,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.ops4j.pax.exam.ExamSystem;
-import org.ops4j.pax.exam.Info;
 import org.ops4j.pax.exam.RelativeTimeout;
 import org.ops4j.pax.exam.TestAddress;
 import org.ops4j.pax.exam.TestContainer;
@@ -85,6 +84,7 @@ public class KarafTestContainer implements TestContainer {
         javaRunner = new KarafJavaRunner();
     }
 
+    @Override
     public synchronized TestContainer start()
     {
         try {
@@ -254,15 +254,7 @@ public class KarafTestContainer implements TestContainer {
         }
     }
 
-    private void printExtraBeforeStart(String[] arguments)
-    {
-        LOGGER.debug("Starting up the test container (Pax Runner " + Info.getPaxRunnerVersion() + " )");
-        LOGGER.debug("Pax Runner Arguments: ( " + arguments.length + ")");
-        for (String s : arguments) {
-            LOGGER.debug("#   " + s);
-        }
-    }
-
+    @Override
     public synchronized TestContainer stop()
     {
         LOGGER.debug("Shutting down the test container (Pax Runner)");
@@ -310,16 +302,19 @@ public class KarafTestContainer implements TestContainer {
         target.getClientRBC().waitForState(bundleId, state, timeout);
     }
 
+    @Override
     public synchronized void call(TestAddress address)
     {
         target.call(address);
     }
 
+    @Override
     public synchronized long install(InputStream stream)
     {
         return install("local", stream);
     }
 
+    @Override
     public synchronized long install(String location, InputStream stream)
     {
         return target.install(location, stream);

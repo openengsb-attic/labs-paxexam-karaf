@@ -33,6 +33,7 @@ public class RMIRegistry {
 
     private static final Logger LOG = LoggerFactory.getLogger(RMIRegistry.class);
 
+    @SuppressWarnings("unused")
     private final Integer m_defaultPort;
 
     private static final int UNSELECTED = -1;
