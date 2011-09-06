@@ -34,6 +34,9 @@ public class KarafPropertiesFile {
     }
 
     public void load() throws IOException {
+        if (!propertyFile.exists()) {
+            return;
+        }
         properties.load(new FileInputStream(propertyFile));
     }
 
@@ -42,6 +45,9 @@ public class KarafPropertiesFile {
     }
 
     public void extend(String key, String value) {
+        if (properties.get(key) == null) {
+            properties.put(key, value);
+        }
         properties.put(key, properties.get(key) + value);
     }
 

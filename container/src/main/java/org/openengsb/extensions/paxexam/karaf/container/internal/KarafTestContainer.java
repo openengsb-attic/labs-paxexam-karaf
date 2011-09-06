@@ -45,6 +45,8 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.openengsb.extensions.paxexam.karaf.options.KarafDistributionConfigurationFileOption;
+import org.openengsb.extensions.paxexam.karaf.options.KarafDistributionConfigurationFilePutOption;
 import org.openengsb.extensions.paxexam.karaf.options.KarafDistributionConfigurationOption;
 import org.ops4j.pax.exam.ExamSystem;
 import org.ops4j.pax.exam.RelativeTimeout;
@@ -58,6 +60,9 @@ import org.ops4j.pax.exam.rbc.client.RemoteBundleContextClient;
 import org.osgi.framework.Bundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multiset;
 
 public class KarafTestContainer implements TestContainer {
     private static final String KARAF_TEST_CONTAINER = "KarafTestContainer.start";
@@ -116,8 +121,9 @@ public class KarafTestContainer implements TestContainer {
             String options = "";
             String[] environment = new String[]{};
 
-            updateKarafProperties(karafHome, subsystem);
-            updateLogProperties(karafBase, subsystem);
+            updateLogProperties(karafHome, subsystem);
+            updateUserSetProperties(karafHome, subsystem);
+            setupExamProperties(karafHome, subsystem);
 
             ExamFeaturesFile examFeaturesFile = new ExamFeaturesFile();
             examFeaturesFile.writeToFile(featuresXmlFile);
@@ -152,7 +158,30 @@ public class KarafTestContainer implements TestContainer {
         return this;
     }
 
-    private void updateKarafProperties(File karafHome, ExamSystem system) throws IOException {
+    private void updateUserSetProperties(File karafHome, ExamSystem subsystem) throws IOException {
+        KarafDistributionConfigurationFileOption[] options =
+            subsystem.getOptions(KarafDistributionConfigurationFileOption.class);
+        ArrayListMultimap<String, KarafDistributionConfigurationFileOption> sortedOptions = ArrayListMultimap.create();
+        for (KarafDistributionConfigurationFileOption option : options) {
+            sortedOptions.put(option.getConfigurationFilePath(), option);
+        }
+        Multiset<String> optionSet = sortedOptions.keys();
+        for (String optionGroup : optionSet) {
+            List<KarafDistributionConfigurationFileOption> singeConfigFileOptions = sortedOptions.get(optionGroup);
+            KarafPropertiesFile karafPropertiesFile = new KarafPropertiesFile(karafHome, optionGroup);
+            karafPropertiesFile.load();
+            for (KarafDistributionConfigurationFileOption optionToApply : singeConfigFileOptions) {
+                if (optionToApply instanceof KarafDistributionConfigurationFilePutOption) {
+                    karafPropertiesFile.put(optionToApply.getKey(), optionToApply.getValue());
+                } else {
+                    karafPropertiesFile.extend(optionToApply.getKey(), optionToApply.getValue());
+                }
+            }
+            karafPropertiesFile.store();
+        }
+    }
+
+    private void setupExamProperties(File karafHome, ExamSystem system) throws IOException {
         File customPropertiesFile = new File(karafHome + "/etc/system.properties");
         SystemPropertyOption[] customProps = system.getOptions(SystemPropertyOption.class);
         Properties karafPropertyFile = new Properties();

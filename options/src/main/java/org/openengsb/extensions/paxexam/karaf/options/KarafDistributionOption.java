@@ -19,8 +19,16 @@ public final class KarafDistributionOption {
         return new KarafDistributionConfigurationFilePutOption(configurationFilePath, key, value);
     }
 
+    public static Option editConfigurationFilePut(ConfigurationPointer configurationPointer, String value) {
+        return new KarafDistributionConfigurationFilePutOption(configurationPointer, value);
+    }
+
     public static Option editConfigurationFileExtend(String configurationFilePath, String key, String value) {
         return new KarafDistributionConfigurationFileExtendOption(configurationFilePath, key, value);
+    }
+
+    public static Option editConfigurationFileExtend(ConfigurationPointer configurationPointer, String value) {
+        return new KarafDistributionConfigurationFileExtendOption(configurationPointer, value);
     }
 
 }
