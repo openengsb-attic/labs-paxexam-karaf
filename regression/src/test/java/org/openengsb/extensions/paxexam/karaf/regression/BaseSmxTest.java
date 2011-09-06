@@ -17,10 +17,11 @@
 
 package org.openengsb.extensions.paxexam.karaf.regression;
 
+import static org.openengsb.extensions.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+
 import org.junit.Test;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.options.CustomFrameworkOption;
 
 /**
  * This one is deactivated till there is an SMX available with a newer karaf version
@@ -31,9 +32,8 @@ public class BaseSmxTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ new CustomFrameworkOption("mvn:org.apache.servicemix/apache-servicemix/4.3.0/zip",
-            "servicemix",
-            "servicemix-4.3.0") };
+        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.servicemix/apache-servicemix/4.3.0/zip",
+            "servicemix", "2.1.2") };
     }
 
     @Test

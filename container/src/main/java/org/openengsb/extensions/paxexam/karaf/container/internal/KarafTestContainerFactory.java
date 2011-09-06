@@ -20,10 +20,10 @@ package org.openengsb.extensions.paxexam.karaf.container.internal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openengsb.extensions.paxexam.karaf.options.KarafDistributionConfigurationOption;
 import org.ops4j.pax.exam.ExamSystem;
 import org.ops4j.pax.exam.TestContainer;
 import org.ops4j.pax.exam.TestContainerFactory;
-import org.ops4j.pax.exam.options.CustomFrameworkOption;
 
 public class KarafTestContainerFactory
         implements TestContainerFactory {
@@ -40,15 +40,16 @@ public class KarafTestContainerFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public TestContainer[] create(ExamSystem system)
     {
-        CustomFrameworkOption[] options = system.getOptions(CustomFrameworkOption.class);
+        KarafDistributionConfigurationOption[] options = system.getOptions(KarafDistributionConfigurationOption.class);
         if (options == null || options.length == 0) {
             throw new IllegalStateException(
                 "It is required to define which distribution you would like to use for your karaf distribution based test cases.");
         }
         List<TestContainer> containers = new ArrayList<TestContainer>();
-        for (CustomFrameworkOption testContainer : options) {
+        for (KarafDistributionConfigurationOption testContainer : options) {
             containers.add(new KarafTestContainer(system, m_rmiRegistry, testContainer));
         }
         return containers.toArray(new TestContainer[containers.size()]);

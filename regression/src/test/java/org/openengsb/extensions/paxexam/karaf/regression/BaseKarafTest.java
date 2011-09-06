@@ -17,13 +17,14 @@
 
 package org.openengsb.extensions.paxexam.karaf.regression;
 
+import static org.openengsb.extensions.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.options.CustomFrameworkOption;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 
 @RunWith(JUnit4TestRunner.class)
@@ -32,8 +33,8 @@ public class BaseKarafTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ new CustomFrameworkOption("mvn:org.apache.karaf/apache-karaf/2.2.3/zip", "karaf",
-            "karaf-2.2.3") };
+        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.3/zip", "karaf",
+            "2.2.3") };
     }
 
     @Test

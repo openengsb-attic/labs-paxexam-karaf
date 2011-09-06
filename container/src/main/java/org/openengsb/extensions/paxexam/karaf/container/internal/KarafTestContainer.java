@@ -45,13 +45,13 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.openengsb.extensions.paxexam.karaf.options.KarafDistributionConfigurationOption;
 import org.ops4j.pax.exam.ExamSystem;
 import org.ops4j.pax.exam.RelativeTimeout;
 import org.ops4j.pax.exam.TestAddress;
 import org.ops4j.pax.exam.TestContainer;
 import org.ops4j.pax.exam.TimeoutException;
 import org.ops4j.pax.exam.container.remote.RBCRemoteTarget;
-import org.ops4j.pax.exam.options.CustomFrameworkOption;
 import org.ops4j.pax.exam.options.ServerModeOption;
 import org.ops4j.pax.exam.options.SystemPropertyOption;
 import org.ops4j.pax.exam.rbc.client.RemoteBundleContextClient;
@@ -67,16 +67,12 @@ public class KarafTestContainer implements TestContainer {
     private final KarafJavaRunner javaRunner;
     private final RMIRegistry registry;
     private final ExamSystem system;
-    private final CustomFrameworkOption framework;
+    private final KarafDistributionConfigurationOption framework;
 
     private boolean started = false;
     private RBCRemoteTarget target;
 
-    public KarafTestContainer(
-            final ExamSystem system,
-            final RMIRegistry registry,
-            final CustomFrameworkOption framework)
-    {
+    public KarafTestContainer(ExamSystem system, RMIRegistry registry, KarafDistributionConfigurationOption framework) {
         this.framework = framework;
         this.registry = registry;
         this.system = system;
@@ -85,8 +81,7 @@ public class KarafTestContainer implements TestContainer {
     }
 
     @Override
-    public synchronized TestContainer start()
-    {
+    public synchronized TestContainer start() {
         try {
             String name = system.createID(KARAF_TEST_CONTAINER);
 
@@ -100,7 +95,7 @@ public class KarafTestContainer implements TestContainer {
 
             System.setProperty("java.protocol.handler.pkgs", "org.ops4j.pax.url");
 
-            URL sourceDistribution = new URL(framework.getDefinitionURL());
+            URL sourceDistribution = new URL(framework.getFrameworkURL());
             File targetFolder = subsystem.getTempFolder();
             extractKarafDistribution(sourceDistribution, targetFolder);
 
@@ -255,8 +250,7 @@ public class KarafTestContainer implements TestContainer {
     }
 
     @Override
-    public synchronized TestContainer stop()
-    {
+    public synchronized TestContainer stop() {
         LOGGER.debug("Shutting down the test container (Pax Runner)");
         try {
             if (started) {
@@ -281,48 +275,40 @@ public class KarafTestContainer implements TestContainer {
         return this;
     }
 
-    private static File createTempDirectory() throws IOException
-    {
+    private static File createTempDirectory() throws IOException {
         final File temp;
         temp = File.createTempFile("examkarafbackup", Long.toString(System.nanoTime()));
-        if (!temp.delete())
-        {
+        if (!temp.delete()) {
             throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
         }
-        if (!temp.mkdir())
-        {
+        if (!temp.mkdir()) {
             throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
         }
         return temp;
     }
 
     private void waitForState(final long bundleId, final int state, final RelativeTimeout timeout)
-        throws TimeoutException
-    {
+        throws TimeoutException {
         target.getClientRBC().waitForState(bundleId, state, timeout);
     }
 
     @Override
-    public synchronized void call(TestAddress address)
-    {
+    public synchronized void call(TestAddress address) {
         target.call(address);
     }
 
     @Override
-    public synchronized long install(InputStream stream)
-    {
+    public synchronized long install(InputStream stream) {
         return install("local", stream);
     }
 
     @Override
-    public synchronized long install(String location, InputStream stream)
-    {
+    public synchronized long install(String location, InputStream stream) {
         return target.install(location, stream);
     }
 
     @Override
-    public String toString()
-    {
-        return "KarafTestContainer{" + framework.getDefinitionURL() + "}";
+    public String toString() {
+        return "KarafTestContainer{" + framework.getFrameworkURL() + "}";
     }
 }
