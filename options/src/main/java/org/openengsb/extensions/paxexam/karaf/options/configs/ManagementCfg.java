@@ -6,7 +6,7 @@ import org.openengsb.extensions.paxexam.karaf.options.ConfigurationPointer;
  * Pre configured property file pointers to the most commonly used properties in /etc/config.properties and
  * /etc/org.apache.karaf.management.cfg.
  */
-public class ManagementCfg {
+public interface ManagementCfg {
     static final String FILE_PATH = "/etc/org.apache.karaf.management.cfg";
 
     /**
