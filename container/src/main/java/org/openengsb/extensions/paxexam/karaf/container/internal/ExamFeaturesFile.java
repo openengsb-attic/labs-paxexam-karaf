@@ -38,9 +38,6 @@ public class ExamFeaturesFile {
                     + "<feature name=\"exam\" version=\""
                     + Info.getPaxExamVersion()
                     + "\">\n"
-                    + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-util/"
-                    + Info.getPaxExamVersion()
-                    + "</bundle>\n"
                     + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-extender-service/"
                     + Info.getPaxExamVersion()
                     + "</bundle>\n"
