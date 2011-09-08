@@ -110,13 +110,44 @@ public class KarafTestContainer implements TestContainer {
             File featuresXmlFile = new File(targetFolder + "/examfeatures.xml");
             File karafHome = karafBase;
             String karafData = karafHome + "/data";
+            // if "%JAVA_MIN_MEM%" == "" (
+            // set JAVA_MIN_MEM=128M
+            // )
+            //
+            // if "%JAVA_MAX_MEM%" == "" (
+            // set JAVA_MAX_MEM=512M
+            // )
+            //
+            // if "%JAVA_PERM_MEM%" == "" (
+            // set JAVA_PERM_MEM=16M
+            // )
+            //
+            // if "%JAVA_MAX_PERM_MEM%" == "" (
+            // set JAVA_MAX_PERM_MEM=64M
+            // )
+            // set DEFAULT_JAVA_OPTS=-server -Xms%JAVA_MIN_MEM% -Xmx%JAVA_MAX_MEM% -XX:PermSize=%JAVA_PERM_MEM%
+            // -XX:MaxPermSize=%JAVA_MAX_PERM_MEM% -Dderby.system.home="%KARAF_DATA%\derby"
+            // -Dderby.storage.fileSyncTransactionLog=true -Dcom.sun.management.jmxremote
+            //
+            // set CLASSPATH=%LOCAL_CLASSPATH%;%KARAF_BASE%\conf
+            //
+            // set DEFAULT_JAVA_DEBUG_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE
+            // -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
             String javaOpts = "";
             String[] javaEndorsedDirs =
                 new String[]{ javaHome + "/jre/lib/endorsed", javaHome + "/lib/endorsed", karafHome + "/lib/endorsed" };
             String[] javaExtDirs =
                 new String[]{ javaHome + "/jre/lib/ext", javaHome + "/lib/ext", javaHome + "/lib/ext" };
-            String karafOpts = "";
-            String opts = "";
+            String[] karafOpts = new String[] {};
+            // this is the "typical case"
+            String opts[] = new String[]{ "-Dkaraf.startLocalConsole=true", "-Dkaraf.startRemoteShell=true" };
+            // :EXECUTE_SERVER
+            // SET OPTS=-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true
+            // shift
+            // goto :RUN_LOOP
+            //
+            // :EXECUTE_CLIENT
+            // SET OPTS=-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false
             String[] classPath = buildKarafClasspath(karafHome);
             String main = "org.apache.karaf.main.Main";
             String options = "";

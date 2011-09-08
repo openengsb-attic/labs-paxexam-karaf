@@ -40,8 +40,8 @@ public class KarafJavaRunner {
     public synchronized void
         exec(final String[] environment, final File karafBase, final String javaHome, final String javaOpts,
                 final String[] javaEndorsedDirs,
-                final String[] javaExtDirs, final String karafHome, final String karafData, final String karafOpts,
-                final String opts, final String[] classPath, final String main, final String options) {
+                final String[] javaExtDirs, final String karafHome, final String karafData, final String[] karafOpts,
+                final String[] opts, final String[] classPath, final String main, final String options) {
         new Thread("KarafJavaRunner") {
             @Override
             public void run() {
@@ -183,9 +183,9 @@ public class KarafJavaRunner {
 
         /**
          * Create helper thread to safely shutdown the external framework process
-         * 
+         *
          * @param process framework process
-         * 
+         *
          * @return stream handler
          */
         private Thread createShutdownHook(final Process process)
@@ -197,6 +197,7 @@ public class KarafJavaRunner {
             return new Thread(
                 new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         inPipe.stop();
@@ -236,9 +237,9 @@ public class KarafJavaRunner {
 
         /**
          * Appends an array of strings to command line.
-         * 
+         *
          * @param segments array to append
-         * 
+         *
          * @return CommandLineBuilder for fluent api
          */
         private CommandLineBuilder append(final String[] segments)
@@ -255,9 +256,9 @@ public class KarafJavaRunner {
 
         /**
          * Appends a string to command line.
-         * 
+         *
          * @param segment string to append
-         * 
+         *
          * @return CommandLineBuilder for fluent api
          */
         public CommandLineBuilder append(final String segment)
@@ -271,7 +272,7 @@ public class KarafJavaRunner {
 
         /**
          * Returns the command line.
-         * 
+         *
          * @return command line
          */
         public String[] toArray()
