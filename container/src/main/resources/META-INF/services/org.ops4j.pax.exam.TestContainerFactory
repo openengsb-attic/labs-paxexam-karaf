@@ -1,1 +1,1 @@
-org.openengsb.extensions.paxexam.karaf.container.internal.KarafTestContainerFactory
+org.openengsb.labs.paxexam.karaf.container.internal.KarafTestContainerFactory
