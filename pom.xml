@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>org.openengsb.extensions.paxexam.karaf</groupId>
-  <artifactId>karaf</artifactId>
+  <artifactId>paxexam-karaf</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 

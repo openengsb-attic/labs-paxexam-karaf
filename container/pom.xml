@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>org.openengsb.extensions.paxexam.karaf</groupId>
-  <artifactId>container</artifactId>
+  <artifactId>paxexam-karaf-container</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -40,7 +40,7 @@
     </dependency>
     <dependency>
       <groupId>org.openengsb.extensions.paxexam.karaf</groupId>
-      <artifactId>options</artifactId>
+      <artifactId>paxexam-karaf-options</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
