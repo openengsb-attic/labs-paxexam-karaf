@@ -44,7 +44,8 @@ public class ExamFeaturesFile {
                     + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-container-rbc/"
                     + Info.getPaxExamVersion()
                     + "</bundle>\n"
-                    + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.junit/4.7_3</bundle>\n"
+                    + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.junit/"
+                    + getJunitVersion() + "</bundle>\n"
                     + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/"
                     + Info.getPaxExamVersion()
                     +
@@ -52,13 +53,26 @@ public class ExamFeaturesFile {
                     + "<bundle>mvn:org.openengsb.extensions.paxexam.karaf/options/"
                     + getOptionsVersion()
                     + "</bundle>\n"
-                    + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/1_1</bundle>\n"
+                    + "<bundle>mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/" + getInjectionVersion()
+                    + "</bundle>\n"
                     + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion() + "</bundle>\n"
                     + "</feature>\n"
                     + "</features>";
     }
 
+    private String getJunitVersion() {
+        return getNamedVersion("junit.version");
+    }
+
+    private String getInjectionVersion() {
+        return getNamedVersion("injection.version");
+    }
+
     private String getOptionsVersion() {
+        return getNamedVersion("options.version");
+    }
+
+    private String getNamedVersion(String name) {
         String optionsVersion = "";
         try {
             final InputStream is = ExamFeaturesFile.class.getClassLoader().getResourceAsStream(
@@ -67,7 +81,7 @@ public class ExamFeaturesFile {
             if (is != null) {
                 final Properties properties = new Properties();
                 properties.load(is);
-                optionsVersion = properties.getProperty("options.version", "").trim();
+                optionsVersion = properties.getProperty(name, "").trim();
             }
         } catch (Exception ignore) {
             // use default versions
