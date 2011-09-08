@@ -27,25 +27,21 @@
       <artifactId>pax-exam-junit4</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- Test Distributions -->
     <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-util</artifactId>
-      <scope>test</scope>
+      <groupId>org.apache.karaf</groupId>
+      <artifactId>apache-karaf</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.core</artifactId>
-      <scope>test</scope>
+      <groupId>org.apache.servicemix</groupId>
+      <artifactId>apache-servicemix</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.compendium</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>test</scope>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb</artifactId>
+      <type>zip</type>
     </dependency>
   </dependencies>
 
