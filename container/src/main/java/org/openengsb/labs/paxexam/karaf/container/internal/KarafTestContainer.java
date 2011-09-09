@@ -58,12 +58,14 @@ import org.ops4j.pax.exam.container.remote.RBCRemoteTarget;
 import org.ops4j.pax.exam.options.ProvisionOption;
 import org.ops4j.pax.exam.options.ServerModeOption;
 import org.ops4j.pax.exam.options.SystemPropertyOption;
+import org.ops4j.pax.exam.options.extra.VMOption;
 import org.ops4j.pax.exam.rbc.client.RemoteBundleContextClient;
 import org.osgi.framework.Bundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
 public class KarafTestContainer implements TestContainer {
@@ -143,15 +145,9 @@ public class KarafTestContainer implements TestContainer {
             String[] javaExtDirs =
                 new String[]{ javaHome + "/jre/lib/ext", javaHome + "/lib/ext", javaHome + "/lib/ext" };
             String[] karafOpts = new String[]{};
-            // this is the "typical case"
-            String opts[] = new String[]{ "-Dkaraf.startLocalConsole=true", "-Dkaraf.startRemoteShell=true" };
-            // :EXECUTE_SERVER
-            // SET OPTS=-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true
-            // shift
-            // goto :RUN_LOOP
-            //
-            // :EXECUTE_CLIENT
-            // SET OPTS=-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false
+            ArrayList<String> opts =
+                Lists.newArrayList("-Dkaraf.startLocalConsole=true", "-Dkaraf.startRemoteShell=true");
+            appendVmSettingsFromSystem(opts, subsystem);
             String[] classPath = buildKarafClasspath(karafHome);
             String main = "org.apache.karaf.main.Main";
             String options = "";
@@ -175,7 +171,7 @@ public class KarafTestContainer implements TestContainer {
             long startedAt = System.currentTimeMillis();
 
             javaRunner.exec(environment, karafBase, javaHome.toString(), javaOpts, javaEndorsedDirs, javaExtDirs,
-                karafHome.toString(), karafData, karafOpts, opts, classPath, main, options);
+                karafHome.toString(), karafData, karafOpts, opts.toArray(new String[]{}), classPath, main, options);
 
             LOGGER.debug("Test Container started in " + (System.currentTimeMillis() - startedAt) + " millis");
             LOGGER.info("Wait for test container to finish its initialization " + subsystem.getTimeout());
@@ -194,6 +190,13 @@ public class KarafTestContainer implements TestContainer {
             throw new RuntimeException("Problem starting container", e);
         }
         return this;
+    }
+
+    private void appendVmSettingsFromSystem(ArrayList<String> opts, ExamSystem subsystem) {
+        VMOption[] options = subsystem.getOptions(VMOption.class);
+        for (VMOption option : options) {
+            opts.add(option.getOption());
+        }
     }
 
     @SuppressWarnings("rawtypes")
