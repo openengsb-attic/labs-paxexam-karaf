@@ -28,22 +28,6 @@
       <artifactId>pax-exam-junit4</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- Test Distributions -->
-    <dependency>
-      <groupId>org.apache.karaf</groupId>
-      <artifactId>apache-karaf</artifactId>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.servicemix</groupId>
-      <artifactId>apache-servicemix</artifactId>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.openengsb</groupId>
-      <artifactId>openengsb</artifactId>
-      <type>zip</type>
-    </dependency>
   </dependencies>
 
 </project>
