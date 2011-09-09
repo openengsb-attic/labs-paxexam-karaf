@@ -44,12 +44,8 @@ public class ExamFeaturesFile {
                     + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-container-rbc/"
                     + Info.getPaxExamVersion()
                     + "</bundle>\n"
-                    + "<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.junit/"
-                    + getJunitVersion() + "</bundle>\n"
-                    + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/"
-                    + Info.getPaxExamVersion()
-                    +
-                    "</bundle>\n"
+                    + "<bundle>wrap:mvn:junit/junit/4.8.1</bundle>\n"
+                    + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/" + Info.getPaxExamVersion() + "</bundle>\n"
                     + "<bundle>mvn:org.openengsb.extensions.paxexam.karaf/options/"
                     + getOptionsVersion()
                     + "</bundle>\n"
