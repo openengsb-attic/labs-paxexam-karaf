@@ -6,9 +6,7 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import javax.inject.Inject;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -25,12 +23,13 @@ public class OpenEngSBBundleContextNotNullTest {
     @Inject
     private BundleContext bundleContext;
 
-    @BeforeClass
-    public void beforeClass() {
-        System.out.println("=================================");
-        System.out.println("CLASS Before bundleContext validation CLASS");
-        System.out.println("=================================");
-    }
+    // TODO: PAXEXAM-288
+    // @BeforeClass
+    // public void beforeClass() {
+    // System.out.println("=================================");
+    // System.out.println("CLASS Before bundleContext validation CLASS");
+    // System.out.println("=================================");
+    // }
 
     @Before
     public void setUp() {
@@ -57,11 +56,12 @@ public class OpenEngSBBundleContextNotNullTest {
         System.out.println("=================================");
     }
 
-    @AfterClass
-    public void afterClass() {
-        System.out.println("=================================");
-        System.out.println("CLASS After bundleContext validation CLASS");
-        System.out.println("=================================");
-    }
+    // TODO: PAXEXAM-288
+    // @AfterClass
+    // public void afterClass() {
+    // System.out.println("=================================");
+    // System.out.println("CLASS After bundleContext validation CLASS");
+    // System.out.println("=================================");
+    // }
 
 }

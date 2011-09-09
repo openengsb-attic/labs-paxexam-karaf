@@ -97,6 +97,7 @@ public class KarafTestContainer implements TestContainer {
                     systemProperty(RMI_HOST_PROPERTY).value(registry.getHost()),
                     systemProperty(RMI_PORT_PROPERTY).value("" + registry.getPort()),
                     systemProperty(RMI_NAME_PROPERTY).value(name),
+                    systemProperty("pax.exam.invoker").value("junit"),
                     systemProperty("pax.exam.inject").value("true")
                 ));
             target = new RBCRemoteTarget(name, registry.getPort(), subsystem.getTimeout());
