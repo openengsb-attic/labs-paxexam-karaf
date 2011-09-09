@@ -17,6 +17,7 @@
 
 package org.openengsb.labs.paxexam.karaf.regression;
 
+import static junit.framework.Assert.assertTrue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 
 import org.junit.Test;
@@ -50,5 +51,6 @@ public class BaseOpenEngSBTest {
         System.out.println("===========================================");
         System.out.println("===========================================");
         System.out.println("===========================================");
+        assertTrue(true);
     }
 }

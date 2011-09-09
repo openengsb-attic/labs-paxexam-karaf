@@ -17,6 +17,7 @@
 
 package org.openengsb.labs.paxexam.karaf.regression;
 
+import static junit.framework.Assert.assertTrue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 
@@ -52,5 +53,22 @@ public class BaseKarafEquinoxFrameworkTest {
         System.out.println("===========================================");
         System.out.println("===========================================");
         System.out.println("===========================================");
+        assertTrue(true);
+    }
+
+    @Test
+    public void test2() throws Exception {
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        assertTrue(true);
     }
 }
