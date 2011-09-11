@@ -30,5 +30,46 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.karaf</groupId>
+                  <artifactId>apache-karaf</artifactId>
+                  <type>zip</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.servicemix</groupId>
+                  <artifactId>apache-servicemix</artifactId>
+                  <type>zip</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openengsb</groupId>
+                  <artifactId>openengsb</artifactId>
+                  <type>zip</type>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/wars</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
 
