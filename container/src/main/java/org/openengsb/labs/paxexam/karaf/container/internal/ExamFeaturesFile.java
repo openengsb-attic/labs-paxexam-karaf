@@ -44,9 +44,10 @@ public class ExamFeaturesFile {
                     + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-container-rbc/"
                     + Info.getPaxExamVersion()
                     + "</bundle>\n"
-                    + "<bundle>wrap:mvn:junit/junit/4.8.1</bundle>\n"
-                    + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/" + Info.getPaxExamVersion() + "</bundle>\n"
-                    + "<bundle>mvn:org.openengsb.extensions.paxexam.karaf/options/"
+                    + "<bundle>wrap:mvn:junit/junit/" + getJunitVersion() + "</bundle>\n"
+                    + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/" + Info.getPaxExamVersion()
+                    + "</bundle>\n"
+                    + "<bundle>mvn:org.openengsb.labs.paxexam.karaf/paxexam-karaf-options/"
                     + getOptionsVersion()
                     + "</bundle>\n"
                     + "<bundle>mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/" + getInjectionVersion()
