@@ -93,7 +93,8 @@ public class ExamFeaturesFile {
     public void adaptDistributionToStartExam(File karafHome, File featuresXmlFile) throws IOException {
         KarafPropertiesFile karafPropertiesFile = new KarafPropertiesFile(karafHome, Constants.FEATURES_CFG_LOCATION);
         karafPropertiesFile.load();
-        karafPropertiesFile.extend("featuresRepositories", ",file:" + featuresXmlFile);
+        String finalFilePath = ",file:" + featuresXmlFile.toString().replaceAll("\\\\","/");
+        karafPropertiesFile.extend("featuresRepositories", finalFilePath);
         karafPropertiesFile.extend("featuresBoot", ",exam");
         karafPropertiesFile.store();
     }
