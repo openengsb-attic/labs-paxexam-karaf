@@ -49,6 +49,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFilePutOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
+import org.openengsb.labs.paxexam.karaf.options.LogLevelOption;
 import org.ops4j.pax.exam.ExamSystem;
 import org.ops4j.pax.exam.RelativeTimeout;
 import org.ops4j.pax.exam.TestAddress;
@@ -265,11 +266,18 @@ public class KarafTestContainer implements TestContainer {
     }
 
     private void updateLogProperties(File karafHome, ExamSystem system) throws IOException {
+        String realLogLevel = retrieveRealLogLevel(system);
         File customPropertiesFile = new File(karafHome + "/etc/org.ops4j.pax.logging.cfg");
         Properties karafPropertyFile = new Properties();
         karafPropertyFile.load(new FileInputStream(customPropertiesFile));
-        karafPropertyFile.put("log4j.rootLogger", "WARN, out, stdout, osgi:*");
+        karafPropertyFile.put("log4j.rootLogger", realLogLevel + ", out, stdout, osgi:*");
         karafPropertyFile.store(new FileOutputStream(customPropertiesFile), "updated by pax-exam");
+    }
+
+    private String retrieveRealLogLevel(ExamSystem system) {
+        LogLevelOption[] logLevelOptions = system.getOptions(LogLevelOption.class);
+        return logLevelOptions != null && logLevelOptions.length != 0 ? logLevelOptions[0].getLogLevel().toString()
+                : "WARN";
     }
 
     private String[] buildKarafClasspath(File karafHome) {

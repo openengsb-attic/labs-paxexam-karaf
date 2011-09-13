@@ -2,6 +2,7 @@ package org.openengsb.labs.paxexam.karaf.options;
 
 import static java.lang.String.format;
 
+import org.openengsb.labs.paxexam.karaf.options.LogLevelOption.LogLevel;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.options.extra.VMOption;
 
@@ -78,6 +79,22 @@ public final class KarafDistributionOption {
      */
     public static Option debugConfiguration() {
         return debugConfiguration("5005", true);
+    }
+
+    /**
+     * A very simple and convinient method to set a specific log level without the need of configure the specific option
+     * itself.
+     */
+    public static Option logLevel(LogLevel logLevel) {
+        return new LogLevelOption(logLevel);
+    }
+
+    /**
+     * A very simple and convinient method to set a specific log level without the need of configure the specific option
+     * itself.
+     */
+    public static LogLevelOption logLevel() {
+        return new LogLevelOption();
     }
 
     /**
