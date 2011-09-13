@@ -28,10 +28,29 @@
       <artifactId>pax-exam-junit4</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.assemblies</groupId>
+      <artifactId>apache-karaf-full</artifactId>
+      <type>zip</type>
+      <classifier>bin</classifier>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.servicemix.tooling</groupId>
+        <artifactId>depends-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-depends-file</id>
+            <goals>
+              <goal>generate-depends-file</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>

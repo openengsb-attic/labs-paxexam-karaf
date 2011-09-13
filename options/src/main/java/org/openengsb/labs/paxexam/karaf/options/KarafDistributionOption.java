@@ -19,9 +19,17 @@ public final class KarafDistributionOption {
     }
 
     /**
+     * Configures which distribution options to use. Relevant are the frameworkURL, the frameworkName and the Karaf
+     * version since all of those params are relevant to decide which internal configurations to use.
+     */
+    public static KarafDistributionConfigurationOption karafDistributionConfiguration() {
+        return new KarafDistributionConfigurationOption();
+    }
+
+    /**
      * This option allows to configure each configuration fille based on the karaf.home location. The value is "put".
      * Which means it is either replaced or added.
-     *
+     * 
      * If you like to extend an option (e.g. make a=b to a=b,c) please make use of the
      * {@link KarafDistributionConfigurationFileExtendOption}.
      */
@@ -32,7 +40,7 @@ public final class KarafDistributionOption {
     /**
      * This option allows to configure each configuration fille based on the karaf.home location. The value is "put".
      * Which means it is either replaced or added.
-     *
+     * 
      * If you like to extend an option (e.g. make a=b to a=b,c) please make use of the
      * {@link KarafDistributionConfigurationFileExtendOption}.
      */
@@ -44,7 +52,7 @@ public final class KarafDistributionOption {
      * This option allows to extend configurations in each configuration file based on the karaf.home location. The
      * value extends the current value (e.g. a=b to a=a,b) instead of replacing it. If there is no current value it is
      * added.
-     *
+     * 
      * If you would like to have add or replace functionality please use the
      * {@link KarafDistributionConfigurationFilePutOption} instead.
      */
@@ -56,7 +64,7 @@ public final class KarafDistributionOption {
      * This option allows to extend configurations in each configuration file based on the karaf.home location. The
      * value extends the current value (e.g. a=b to a=a,b) instead of replacing it. If there is no current value it is
      * added.
-     *
+     * 
      * If you would like to have add or replace functionality please use the
      * {@link KarafDistributionConfigurationFilePutOption} instead.
      */
