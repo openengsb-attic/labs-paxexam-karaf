@@ -161,13 +161,6 @@
         <type>zip</type>
       </dependency>
       <dependency>
-        <groupId>org.apache.karaf.assemblies</groupId>
-        <artifactId>apache-karaf-full</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
-        <type>zip</type>
-        <classifier>bin</classifier>
-      </dependency>
-      <dependency>
         <groupId>org.apache.servicemix</groupId>
         <artifactId>apache-servicemix</artifactId>
         <version>4.3.0</version>
@@ -181,19 +174,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <repositories>
-    <repository>
-      <id>apache.snapshots</id>
-      <url>https://repository.apache.org/content/repositories/snapshots//</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
 
 </project>
 

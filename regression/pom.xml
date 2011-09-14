@@ -29,11 +29,40 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.karaf.assemblies</groupId>
-      <artifactId>apache-karaf-full</artifactId>
+      <groupId>org.apache.karaf</groupId>
+      <artifactId>apache-karaf</artifactId>
       <type>zip</type>
-      <classifier>bin</classifier>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.karaf.shell</groupId>
+          <artifactId>org.apache.karaf.shell.dev</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.servicemix</groupId>
+      <artifactId>apache-servicemix</artifactId>
+      <type>zip</type>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.karaf.shell</groupId>
+          <artifactId>org.apache.karaf.shell.dev</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb</artifactId>
+      <type>zip</type>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.karaf.shell</groupId>
+          <artifactId>org.apache.karaf.shell.dev</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 
@@ -48,41 +77,6 @@
             <goals>
               <goal>generate-depends-file</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache.karaf</groupId>
-                  <artifactId>apache-karaf</artifactId>
-                  <type>zip</type>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.servicemix</groupId>
-                  <artifactId>apache-servicemix</artifactId>
-                  <type>zip</type>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openengsb</groupId>
-                  <artifactId>openengsb</artifactId>
-                  <type>zip</type>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${project.build.directory}/wars</outputDirectory>
-              <overWriteReleases>false</overWriteReleases>
-              <overWriteSnapshots>true</overWriteSnapshots>
-            </configuration>
           </execution>
         </executions>
       </plugin>
