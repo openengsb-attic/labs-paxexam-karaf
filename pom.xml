@@ -17,7 +17,7 @@
         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
         See the License for the specific language governing permissions and
         limitations under the License.
-        
+
     -->
 
   <modelVersion>4.0.0</modelVersion>
@@ -49,6 +49,19 @@
     <module>container</module>
     <module>regression</module>
   </modules>
+
+  <scm>
+    <connection>scm:git:git://github.com/openengsb/labs-paxexam-karaf.git</connection>
+    <developerConnection>scm:git:git@github.com:openengsb/labs-paxexam-karaf.git</developerConnection>
+    <url>http://github.com/openengsb/labs-paxexam-karaf</url>
+  </scm>
+
+  <inceptionYear>2011</inceptionYear>
+
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://issues.openengsb.org/jira/browse/LAB</url>
+  </issueManagement>
 
   <build>
     <pluginManagement>
