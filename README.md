@@ -13,23 +13,6 @@ This project creates a container for PAXEXAM starting any Apache Karaf based dis
 test probes on it. That way less configuration is needed and the risk for errors is drastically reduced since the
 exact configurations of the distribution are used.
 
-## ATTENTION
-
-This project currently works against snapshots. While all of those snapshots are deployed to various repositories
-it is still a good solution to build them locally:
-
-<pre>
-git clone git://github.com/ops4j/org.ops4j.pax.exam2
-cd org.ops4j.pax.exam2
-mvn install -Dmaven.test.skip=true
-</pre>
-
-<pre>
-git clone git://github.com/apache/karaf
-cd karaf
-mvn install -Dmaven.test.skip=true
-</pre>
-
 ## Limitations
 
 Currently this extension does only work with distributions based on Karaf >= 2.2.0 like the latest Karaf releases
