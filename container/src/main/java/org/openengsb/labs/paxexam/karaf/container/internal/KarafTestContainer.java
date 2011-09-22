@@ -23,9 +23,11 @@ import static org.ops4j.pax.exam.rbc.Constants.RMI_HOST_PROPERTY;
 import static org.ops4j.pax.exam.rbc.Constants.RMI_NAME_PROPERTY;
 import static org.ops4j.pax.exam.rbc.Constants.RMI_PORT_PROPERTY;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +45,7 @@ import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -320,13 +323,38 @@ public class KarafTestContainer implements TestContainer {
 
     private void extractKarafDistribution(URL sourceDistribution, File targetFolder) throws IOException {
         if (sourceDistribution.toExternalForm().indexOf("/zip") > 0) {
-            extract(new ZipArchiveInputStream(sourceDistribution.openStream()), targetFolder);
+            extractZipDistribution(sourceDistribution, targetFolder);
         } else if (sourceDistribution.toExternalForm().indexOf("/tar.gz") > 0) {
-            extract(new TarArchiveInputStream(sourceDistribution.openStream()), targetFolder);
+            extractTarGzDistribution(sourceDistribution, targetFolder);
         } else {
             throw new IllegalStateException(
                 "Unknow packaging of distribution; only zip or tar.gz could be handled.");
         }
+    }
+
+    private void extractTarGzDistribution(URL sourceDistribution, File targetFolder) throws IOException,
+        FileNotFoundException {
+        File uncompressedFile = File.createTempFile("uncompressedTarGz-", ".tar");
+        extractGzArchive(sourceDistribution.openStream(), uncompressedFile);
+        extract(new TarArchiveInputStream(new FileInputStream(uncompressedFile)), targetFolder);
+        FileUtils.forceDelete(uncompressedFile);
+    }
+
+    private void extractZipDistribution(URL sourceDistribution, File targetFolder) throws IOException {
+        extract(new ZipArchiveInputStream(sourceDistribution.openStream()), targetFolder);
+    }
+
+    private void extractGzArchive(InputStream tarGz, File tar) throws IOException {
+        BufferedInputStream in = new BufferedInputStream(tarGz);
+        FileOutputStream out = new FileOutputStream(tar);
+        GzipCompressorInputStream gzIn = new GzipCompressorInputStream(in);
+        final byte[] buffer = new byte[1000];
+        int n = 0;
+        while (-1 != (n = gzIn.read(buffer))) {
+            out.write(buffer, 0, n);
+        }
+        out.close();
+        gzIn.close();
     }
 
     private void extract(ArchiveInputStream is, File targetDir) throws IOException {
