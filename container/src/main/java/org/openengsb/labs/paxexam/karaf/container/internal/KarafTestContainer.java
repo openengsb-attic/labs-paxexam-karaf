@@ -319,9 +319,9 @@ public class KarafTestContainer implements TestContainer {
     }
 
     private void extractKarafDistribution(URL sourceDistribution, File targetFolder) throws IOException {
-        if (sourceDistribution.toExternalForm().indexOf("/zip") != 0) {
+        if (sourceDistribution.toExternalForm().indexOf("/zip") > 0) {
             extract(new ZipArchiveInputStream(sourceDistribution.openStream()), targetFolder);
-        } else if (sourceDistribution.toExternalForm().indexOf("/tar.gz") != 0) {
+        } else if (sourceDistribution.toExternalForm().indexOf("/tar.gz") > 0) {
             extract(new TarArchiveInputStream(sourceDistribution.openStream()), targetFolder);
         } else {
             throw new IllegalStateException(
