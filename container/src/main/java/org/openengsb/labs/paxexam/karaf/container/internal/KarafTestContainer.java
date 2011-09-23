@@ -116,6 +116,7 @@ public class KarafTestContainer implements TestContainer {
 
             File javaHome = new File(System.getProperty("java.home"));
             File karafBase = searchKarafBase(targetFolder);
+            File karafBin = new File(karafBase + "/bin");
             File featuresXmlFile = new File(targetFolder + "/examfeatures.xml");
             File karafHome = karafBase;
             File deploy = new File(karafBase + "/deploy");
@@ -161,6 +162,7 @@ public class KarafTestContainer implements TestContainer {
             updateLogProperties(karafHome, subsystem);
             updateUserSetProperties(karafHome, subsystem);
             setupExamProperties(karafHome, subsystem);
+            makeScriptsInBinExec(karafBin);
             copyReferencedArtifactsToDeployFolder(deploy, subsystem, fileEndings);
 
             ExamFeaturesFile examFeaturesFile = new ExamFeaturesFile();
@@ -168,6 +170,7 @@ public class KarafTestContainer implements TestContainer {
 
             File backupDir = createTempDirectory();
             FileUtils.copyDirectory(targetFolder, backupDir);
+            makeScriptsInBinExec(new File(backupDir + "/bin"));
 
             examFeaturesFile.adaptDistributionToStartExam(backupDir, featuresXmlFile);
             examFeaturesFile.adaptDistributionToStartExam(karafHome, featuresXmlFile);
@@ -194,6 +197,16 @@ public class KarafTestContainer implements TestContainer {
             throw new RuntimeException("Problem starting container", e);
         }
         return this;
+    }
+
+    private void makeScriptsInBinExec(File karafBin) {
+        if (!karafBin.exists()) {
+            return;
+        }
+        File[] files = karafBin.listFiles();
+        for (File file : files) {
+            file.setExecutable(true);
+        }
     }
 
     private void appendVmSettingsFromSystem(ArrayList<String> opts, ExamSystem subsystem) {
