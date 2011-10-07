@@ -57,31 +57,52 @@ public class KarafDistributionConfigurationOption implements Option {
         this.karafVersion = karafVersion;
     }
 
+    /**
+     * Sets the URL of the framework as a String (for example a file).
+     */
     public KarafDistributionConfigurationOption frameworkUrl(String frameworkURL) {
         this.frameworkURL = frameworkURL;
         return this;
     }
 
+    /**
+     * Sets the URL of the frameworks as a maven reference.
+     */
     public KarafDistributionConfigurationOption frameworkUrl(MavenUrlReference frameworkURL) {
         frameworkURLReference = frameworkURL;
         return this;
     }
 
+    /**
+     * Set's the name of the framework. This is only used for logging.
+     */
     public KarafDistributionConfigurationOption name(String name) {
         this.name = name;
         return this;
     }
 
+    /**
+     * The version of karaf used by the framework. That one is required since there is the high possibility that
+     * configuration is different between various karaf versions.
+     */
     public KarafDistributionConfigurationOption karafVersion(String karafVersion) {
         this.karafVersion = karafVersion;
         return this;
     }
 
+    /**
+     * Define the unpack directory for the karaf distribution. In this directory a UUID named directory will be created
+     * for each environment.
+     */
     public KarafDistributionConfigurationOption unpackDirectory(File unpackDirectory) {
         this.unpackDirectory = unpackDirectory;
         return this;
     }
 
+    /**
+     * Backup directory for the Karaf distribution which should be run. For each backup a UUID named directory in the
+     * subdirectory specified here will be created.
+     */
     public KarafDistributionConfigurationOption backupDirectory(File backupDirectory) {
         this.backupDirectory = backupDirectory;
         return this;

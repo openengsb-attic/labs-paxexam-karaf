@@ -49,6 +49,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationConsoleOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFilePutOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
@@ -152,7 +153,8 @@ public class KarafTestContainer implements TestContainer {
                 new String[]{ javaHome + "/jre/lib/ext", javaHome + "/lib/ext", javaHome + "/lib/ext" };
             String[] karafOpts = new String[]{};
             ArrayList<String> opts =
-                Lists.newArrayList("-Dkaraf.startLocalConsole=true", "-Dkaraf.startRemoteShell=true");
+                Lists.newArrayList("-Dkaraf.startLocalConsole=" + shouldLocalConsoleBeStarted(subsystem),
+                    "-Dkaraf.startRemoteShell=" + shouldRemoteShellBeStarted(subsystem));
             appendVmSettingsFromSystem(opts, subsystem);
             String[] classPath = buildKarafClasspath(karafHome);
             String main = "org.apache.karaf.main.Main";
@@ -198,6 +200,34 @@ public class KarafTestContainer implements TestContainer {
             throw new RuntimeException("Problem starting container", e);
         }
         return this;
+    }
+
+    private String shouldRemoteShellBeStarted(ExamSystem subsystem) {
+        KarafDistributionConfigurationConsoleOption[] consoleOptions =
+            subsystem.getOptions(KarafDistributionConfigurationConsoleOption.class);
+        if (consoleOptions == null) {
+            return "true";
+        }
+        for (KarafDistributionConfigurationConsoleOption consoleOption : consoleOptions) {
+            if (consoleOption.getStartRemoteShell() != null) {
+                return consoleOption.getStartRemoteShell() ? "true" : "false";
+            }
+        }
+        return "true";
+    }
+
+    private String shouldLocalConsoleBeStarted(ExamSystem subsystem) {
+        KarafDistributionConfigurationConsoleOption[] consoleOptions =
+            subsystem.getOptions(KarafDistributionConfigurationConsoleOption.class);
+        if (consoleOptions == null) {
+            return "true";
+        }
+        for (KarafDistributionConfigurationConsoleOption consoleOption : consoleOptions) {
+            if (consoleOption.getStartLocalConsole() != null) {
+                return consoleOption.getStartLocalConsole() ? "true" : "false";
+            }
+        }
+        return "true";
     }
 
     private void makeScriptsInBinExec(File karafBin) {
@@ -489,4 +519,3 @@ public class KarafTestContainer implements TestContainer {
         return "KarafTestContainer{" + framework.getFrameworkURL() + "}";
     }
 }
-
