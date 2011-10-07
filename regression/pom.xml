@@ -71,8 +71,8 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.openengsb</groupId>
-      <artifactId>openengsb</artifactId>
+      <groupId>org.openengsb.framework</groupId>
+      <artifactId>openengsb-framework</artifactId>
       <type>zip</type>
       <scope>test</scope>
       <exclusions>

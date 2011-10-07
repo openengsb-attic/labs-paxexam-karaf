@@ -57,8 +57,9 @@ public class OpenEngSBBundleContextNotNullTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ karafDistributionConfiguration("mvn:org.openengsb/openengsb/1.2.1.RELEASE/zip",
-            "openengsb", "2.2.2") };
+        return new Option[]{ karafDistributionConfiguration(
+            "mvn:org.openengsb.framework/openengsb-framework/2.0.3/zip",
+            "openengsb", "2.2.3") };
     }
 
     @Test

@@ -39,7 +39,8 @@ public class VersionAsInProjectOpenEngSBTest {
     @Configuration
     public Option[] config() {
         return new Option[]{ karafDistributionConfiguration().frameworkUrl(
-            maven().groupId("org.openengsb").artifactId("openengsb").type("zip").versionAsInProject()) };
+            maven().groupId("org.openengsb.framework").artifactId("openengsb-framework").type("zip")
+                .versionAsInProject()) };
     }
 
     @Test
