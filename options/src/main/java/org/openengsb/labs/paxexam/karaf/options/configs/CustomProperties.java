@@ -25,7 +25,7 @@ import org.openengsb.labs.paxexam.karaf.options.ConfigurationPointer;
  */
 public interface CustomProperties {
 
-    static final String FILE_PATH = "/etc/config.properties";
+    static final String FILE_PATH = "etc/config.properties";
 
     /**
      * Possible values here are felix or equinox

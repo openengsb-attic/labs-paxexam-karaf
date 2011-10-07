@@ -24,7 +24,7 @@ import org.openengsb.labs.paxexam.karaf.options.ConfigurationPointer;
  * /etc/system.properties..
  */
 public interface SystemProperties {
-    static final String FILE_PATH = "/etc/system.properties";
+    static final String FILE_PATH = "etc/system.properties";
 
     static final ConfigurationPointer KARAF_NAME = new CustomPropertiesPointer("karaf.name");
 

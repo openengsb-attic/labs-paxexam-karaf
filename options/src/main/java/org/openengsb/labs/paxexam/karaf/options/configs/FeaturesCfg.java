@@ -24,7 +24,7 @@ import org.openengsb.labs.paxexam.karaf.options.ConfigurationPointer;
  * /etc/org.apache.karaf.features.cfg.
  */
 public interface FeaturesCfg {
-    static final String FILE_PATH = "/etc/org.apache.karaf.features.cfg";
+    static final String FILE_PATH = "etc/org.apache.karaf.features.cfg";
 
     static final ConfigurationPointer REPOSITORIES = new CustomPropertiesPointer("featuresRepositories");
     static final ConfigurationPointer BOOT = new CustomPropertiesPointer("featuresBoot");

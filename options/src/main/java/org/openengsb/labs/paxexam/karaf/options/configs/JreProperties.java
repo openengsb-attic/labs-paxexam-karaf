@@ -25,7 +25,7 @@ import org.openengsb.labs.paxexam.karaf.options.ConfigurationPointer;
  */
 public interface JreProperties {
 
-    static final String FILE_PATH = "/etc/jre.properties";
+    static final String FILE_PATH = "etc/jre.properties";
 
     static final ConfigurationPointer JRE15 = new CustomPropertiesPointer("jre-1.5");
     static final ConfigurationPointer JRE16 = new CustomPropertiesPointer("jre-1.6");

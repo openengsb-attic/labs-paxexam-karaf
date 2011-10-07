@@ -29,7 +29,11 @@ public class KarafPropertiesFile {
     private final File propertyFile;
 
     public KarafPropertiesFile(File karafHome, String location) {
-        propertyFile = new File(karafHome + location);
+        if (location.startsWith("/")) {
+            propertyFile = new File(karafHome + location);
+        } else {
+            propertyFile = new File(karafHome + "/" + location);
+        }
         properties = new Properties();
     }
 

@@ -24,7 +24,7 @@ import org.openengsb.labs.paxexam.karaf.options.ConfigurationPointer;
  * /etc/org.apache.karaf.management.cfg.
  */
 public interface ManagementCfg {
-    static final String FILE_PATH = "/etc/org.apache.karaf.management.cfg";
+    static final String FILE_PATH = "etc/org.apache.karaf.management.cfg";
 
     /**
      * Port of the registry for the exported RMI service

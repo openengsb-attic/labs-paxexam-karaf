@@ -24,7 +24,7 @@ import org.openengsb.labs.paxexam.karaf.options.ConfigurationPointer;
  * /etc/org.ops4j.pax.logging.cfg.
  */
 public interface LoggingCfg {
-    static final String FILE_PATH = "/etc/org.ops4j.pax.logging.cfg";
+    static final String FILE_PATH = "etc/org.ops4j.pax.logging.cfg";
 
     static final ConfigurationPointer ROOT_LOGGER = new CustomPropertiesPointer("log4j.rootLogger");
 

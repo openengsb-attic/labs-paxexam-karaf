@@ -24,7 +24,7 @@ import org.openengsb.labs.paxexam.karaf.options.ConfigurationPointer;
  * /etc/users.properties.
  */
 public interface UsersProperties {
-    static final String FILE_PATH = "/etc/users.properties";
+    static final String FILE_PATH = "etc/users.properties";
 
     static final ConfigurationPointer KARAF_USER = new CustomPropertiesPointer("karaf");
 
