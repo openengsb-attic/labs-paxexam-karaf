@@ -17,6 +17,8 @@
 
 package org.openengsb.labs.paxexam.karaf.options;
 
+import java.io.File;
+
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.options.MavenUrlReference;
 
@@ -30,6 +32,8 @@ public class KarafDistributionConfigurationOption implements Option {
     private MavenUrlReference frameworkURLReference;
     private String name;
     private String karafVersion;
+    private File unpackDirectory;
+    private File backupDirectory;
 
     public KarafDistributionConfigurationOption() {
         frameworkURL = null;
@@ -73,6 +77,16 @@ public class KarafDistributionConfigurationOption implements Option {
         return this;
     }
 
+    public KarafDistributionConfigurationOption unpackDirectory(File unpackDirectory) {
+        this.unpackDirectory = unpackDirectory;
+        return this;
+    }
+
+    public KarafDistributionConfigurationOption backupDirectory(File backupDirectory) {
+        this.backupDirectory = backupDirectory;
+        return this;
+    }
+
     public String getFrameworkURL() {
         if (frameworkURL == null && frameworkURLReference == null) {
             throw new IllegalStateException("Either frameworkurl or frameworkUrlReference need to be set.");
@@ -86,6 +100,14 @@ public class KarafDistributionConfigurationOption implements Option {
 
     public String getKarafVersion() {
         return karafVersion;
+    }
+
+    public File getBackupDirectory() {
+        return backupDirectory;
+    }
+
+    public File getUnpackDirectory() {
+        return unpackDirectory;
     }
 
 }

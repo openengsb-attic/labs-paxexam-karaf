@@ -111,7 +111,8 @@ public class KarafTestContainer implements TestContainer {
             System.setProperty("java.protocol.handler.pkgs", "org.ops4j.pax.url");
 
             URL sourceDistribution = new URL(framework.getFrameworkURL());
-            File targetFolder = subsystem.getTempFolder();
+
+            File targetFolder = retrieveFinalTargetFolder(subsystem);
             extractKarafDistribution(sourceDistribution, targetFolder);
 
             File javaHome = new File(System.getProperty("java.home"));
@@ -168,7 +169,7 @@ public class KarafTestContainer implements TestContainer {
             ExamFeaturesFile examFeaturesFile = new ExamFeaturesFile();
             examFeaturesFile.writeToFile(featuresXmlFile);
 
-            File backupDir = createTempDirectory();
+            File backupDir = retrieveFinalBackupFolder(subsystem);
             FileUtils.copyDirectory(targetFolder, backupDir);
             makeScriptsInBinExec(new File(backupDir + "/bin"));
 
@@ -207,6 +208,32 @@ public class KarafTestContainer implements TestContainer {
         for (File file : files) {
             file.setExecutable(true);
         }
+    }
+
+    private File retrieveFinalTargetFolder(ExamSystem subsystem) {
+        if (framework.getUnpackDirectory() == null) {
+            return subsystem.getConfigFolder();
+        } else {
+            File target = new File(framework.getUnpackDirectory() + "/" + UUID.randomUUID().toString());
+            target = transformToAbsolutePath(target);
+            target.mkdirs();
+            return target;
+        }
+    }
+
+    private File retrieveFinalBackupFolder(ExamSystem subsystem) throws IOException {
+        if (framework.getBackupDirectory() == null) {
+            return createTempDirectory();
+        } else {
+            File target = new File(framework.getBackupDirectory() + "/" + UUID.randomUUID());
+            target = transformToAbsolutePath(target);
+            target.mkdirs();
+            return target;
+        }
+    }
+
+    private File transformToAbsolutePath(File file) {
+        return new File(file.getAbsolutePath());
     }
 
     private void appendVmSettingsFromSystem(ArrayList<String> opts, ExamSystem subsystem) {
@@ -462,3 +489,4 @@ public class KarafTestContainer implements TestContainer {
         return "KarafTestContainer{" + framework.getFrameworkURL() + "}";
     }
 }
+
