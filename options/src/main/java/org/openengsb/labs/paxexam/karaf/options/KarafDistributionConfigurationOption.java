@@ -33,7 +33,6 @@ public class KarafDistributionConfigurationOption implements Option {
     private String name;
     private String karafVersion;
     private File unpackDirectory;
-    private File backupDirectory;
 
     public KarafDistributionConfigurationOption() {
         frameworkURL = null;
@@ -99,15 +98,6 @@ public class KarafDistributionConfigurationOption implements Option {
         return this;
     }
 
-    /**
-     * Backup directory for the Karaf distribution which should be run. For each backup a UUID named directory in the
-     * subdirectory specified here will be created.
-     */
-    public KarafDistributionConfigurationOption backupDirectory(File backupDirectory) {
-        this.backupDirectory = backupDirectory;
-        return this;
-    }
-
     public String getFrameworkURL() {
         if (frameworkURL == null && frameworkURLReference == null) {
             throw new IllegalStateException("Either frameworkurl or frameworkUrlReference need to be set.");
@@ -121,10 +111,6 @@ public class KarafDistributionConfigurationOption implements Option {
 
     public String getKarafVersion() {
         return karafVersion;
-    }
-
-    public File getBackupDirectory() {
-        return backupDirectory;
     }
 
     public File getUnpackDirectory() {

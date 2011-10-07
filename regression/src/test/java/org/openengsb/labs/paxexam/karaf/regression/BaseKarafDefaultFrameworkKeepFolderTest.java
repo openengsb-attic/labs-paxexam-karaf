@@ -19,6 +19,7 @@ package org.openengsb.labs.paxexam.karaf.regression;
 
 import static junit.framework.Assert.assertTrue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 
 import java.io.File;
 
@@ -32,12 +33,12 @@ import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
-public class BaseKarafDefaultFrameworkWithConfiguredFoldersTest {
+public class BaseKarafDefaultFrameworkKeepFolderTest {
 
     @Configuration
     public Option[] config() {
         return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.3/zip", "karaf",
-            "2.2.3").unpackDirectory(new File("target/paxexam/unpack/")) };
+            "2.2.3").unpackDirectory(new File("target/paxexam/unpack/")), keepRuntimeFolder() };
     }
 
     @Test

@@ -29,6 +29,14 @@ import org.ops4j.pax.exam.options.extra.VMOption;
 public final class KarafDistributionOption {
 
     /**
+     * Per default the folder pax-exam is deleting the test directories after a test is over. If you want to keep those
+     * directories (for later evaluation) simply set this option.
+     */
+    public static Option keepRuntimeFolder() {
+        return new KeepRuntimeFolderOption();
+    }
+
+    /**
      * The karaf pax-logging configuration is typically not a file manipulated very often. Therefore we take the freedom
      * of adding a console logger and changing the log level directly. IF you like to configure the file manually (or
      * had so in your distribution) add this option to avoid any automatic modifications to this file!

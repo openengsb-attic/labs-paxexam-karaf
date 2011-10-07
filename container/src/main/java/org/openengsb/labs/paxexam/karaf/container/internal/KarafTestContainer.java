@@ -84,8 +84,11 @@ public class KarafTestContainer implements TestContainer {
     private final ExamSystem system;
     private final KarafDistributionConfigurationOption framework;
 
+    private boolean deleteRuntime = true;
     private boolean started = false;
     private RBCRemoteTarget target;
+
+    private File targetFolder;
 
     public KarafTestContainer(ExamSystem system, RMIRegistry registry, KarafDistributionConfigurationOption framework) {
         this.framework = framework;
@@ -114,7 +117,7 @@ public class KarafTestContainer implements TestContainer {
 
             URL sourceDistribution = new URL(framework.getFrameworkURL());
 
-            File targetFolder = retrieveFinalTargetFolder(subsystem);
+            targetFolder = retrieveFinalTargetFolder(subsystem);
             extractKarafDistribution(sourceDistribution, targetFolder);
 
             File javaHome = new File(System.getProperty("java.home"));
@@ -172,11 +175,6 @@ public class KarafTestContainer implements TestContainer {
             ExamFeaturesFile examFeaturesFile = new ExamFeaturesFile();
             examFeaturesFile.writeToFile(featuresXmlFile);
 
-            File backupDir = retrieveFinalBackupFolder(subsystem);
-            FileUtils.copyDirectory(targetFolder, backupDir);
-            makeScriptsInBinExec(new File(backupDir + "/bin"));
-
-            examFeaturesFile.adaptDistributionToStartExam(backupDir, featuresXmlFile);
             examFeaturesFile.adaptDistributionToStartExam(karafHome, featuresXmlFile);
 
             long startedAt = System.currentTimeMillis();
@@ -246,17 +244,6 @@ public class KarafTestContainer implements TestContainer {
             return subsystem.getConfigFolder();
         } else {
             File target = new File(framework.getUnpackDirectory() + "/" + UUID.randomUUID().toString());
-            target = transformToAbsolutePath(target);
-            target.mkdirs();
-            return target;
-        }
-    }
-
-    private File retrieveFinalBackupFolder(ExamSystem subsystem) throws IOException {
-        if (framework.getBackupDirectory() == null) {
-            return createTempDirectory();
-        } else {
-            File target = new File(framework.getBackupDirectory() + "/" + UUID.randomUUID());
             target = transformToAbsolutePath(target);
             target.mkdirs();
             return target;
@@ -483,21 +470,21 @@ public class KarafTestContainer implements TestContainer {
         } finally {
             started = false;
             target = null;
-            system.clear();
+            if (deleteRuntime) {
+                system.clear();
+                try {
+                    FileUtils.forceDelete(targetFolder);
+                } catch (IOException e) {
+                    LOGGER.info("Can't remove runtime system; shedule it for exit of the jvm.");
+                    try {
+                        FileUtils.forceDeleteOnExit(targetFolder);
+                    } catch (IOException e1) {
+                        LOGGER.error("Well, this should simply not happen...");
+                    }
+                }
+            }
         }
         return this;
-    }
-
-    private static File createTempDirectory() throws IOException {
-        final File temp;
-        temp = File.createTempFile("examkarafbackup", Long.toString(System.nanoTime()));
-        if (!temp.delete()) {
-            throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
-        }
-        if (!temp.mkdir()) {
-            throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
-        }
-        return temp;
     }
 
     private void waitForState(final long bundleId, final int state, final RelativeTimeout timeout)
