@@ -49,6 +49,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.openengsb.labs.paxexam.karaf.options.DoNotModifyLogOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationConsoleOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFilePutOption;
@@ -339,6 +340,11 @@ public class KarafTestContainer implements TestContainer {
     }
 
     private void updateLogProperties(File karafHome, ExamSystem system) throws IOException {
+        DoNotModifyLogOption[] modifyLog = system.getOptions(DoNotModifyLogOption.class);
+        if (modifyLog != null && modifyLog.length != 0) {
+            LOGGER.info("Log file should not be modified by the test framework");
+            return;
+        }
         String realLogLevel = retrieveRealLogLevel(system);
         File customPropertiesFile = new File(karafHome + "/etc/org.ops4j.pax.logging.cfg");
         Properties karafPropertyFile = new Properties();
