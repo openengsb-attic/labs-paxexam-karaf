@@ -54,6 +54,7 @@ import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationCo
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFilePutOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
+import org.openengsb.labs.paxexam.karaf.options.KeepRuntimeFolderOption;
 import org.openengsb.labs.paxexam.karaf.options.LogLevelOption;
 import org.ops4j.pax.exam.ExamSystem;
 import org.ops4j.pax.exam.RelativeTimeout;
@@ -116,6 +117,11 @@ public class KarafTestContainer implements TestContainer {
             System.setProperty("java.protocol.handler.pkgs", "org.ops4j.pax.url");
 
             URL sourceDistribution = new URL(framework.getFrameworkURL());
+
+            KeepRuntimeFolderOption[] keepRuntimeFolder = subsystem.getOptions(KeepRuntimeFolderOption.class);
+            if (keepRuntimeFolder != null && keepRuntimeFolder.length != 0) {
+                deleteRuntime = false;
+            }
 
             targetFolder = retrieveFinalTargetFolder(subsystem);
             extractKarafDistribution(sourceDistribution, targetFolder);
