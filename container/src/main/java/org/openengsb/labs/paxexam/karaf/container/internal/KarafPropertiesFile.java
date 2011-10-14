@@ -51,6 +51,7 @@ public class KarafPropertiesFile {
     public void extend(String key, String value) {
         if (properties.get(key) == null) {
             properties.put(key, value);
+            return;
         }
         properties.put(key, properties.get(key) + value);
     }
