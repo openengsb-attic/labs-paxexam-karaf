@@ -35,10 +35,13 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -71,9 +74,8 @@ import org.osgi.framework.Bundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
+import com.google.common.collect.Maps;
 
 public class KarafTestContainer implements TestContainer {
     private static final String KARAF_TEST_CONTAINER = "KarafTestContainer.start";
@@ -301,16 +303,25 @@ public class KarafTestContainer implements TestContainer {
     private void updateUserSetProperties(File karafHome, ExamSystem subsystem) throws IOException {
         KarafDistributionConfigurationFileOption[] options =
             subsystem.getOptions(KarafDistributionConfigurationFileOption.class);
-        ArrayListMultimap<String, KarafDistributionConfigurationFileOption> sortedOptions = ArrayListMultimap.create();
+        HashMap<String, HashMap<String, KarafDistributionConfigurationFileOption>> optionMap = Maps.newHashMap();
         for (KarafDistributionConfigurationFileOption option : options) {
-            sortedOptions.put(option.getConfigurationFilePath(), option);
+            if (!optionMap.containsKey(option.getConfigurationFilePath())) {
+                optionMap.put(option.getConfigurationFilePath(), new HashMap<String, KarafDistributionConfigurationFileOption>());
+            }
+            HashMap<String, KarafDistributionConfigurationFileOption> optionEntries =
+                optionMap.get(option.getConfigurationFilePath());
+            if (optionEntries.containsKey(option.getKey())) {
+                LOGGER.warn("Key: {} occurs twice; value {} overwritten", option.getKey(),
+                    optionEntries.get(option.getKey()).getValue());
+            }
+            optionEntries.put(option.getKey(), option);
         }
-        Multiset<String> optionSet = sortedOptions.keys();
-        for (String optionGroup : optionSet) {
-            List<KarafDistributionConfigurationFileOption> singeConfigFileOptions = sortedOptions.get(optionGroup);
-            KarafPropertiesFile karafPropertiesFile = new KarafPropertiesFile(karafHome, optionGroup);
+        Set<String> configFiles = optionMap.keySet();
+        for (String configFile : configFiles) {
+            KarafPropertiesFile karafPropertiesFile = new KarafPropertiesFile(karafHome, configFile);
             karafPropertiesFile.load();
-            for (KarafDistributionConfigurationFileOption optionToApply : singeConfigFileOptions) {
+            Collection<KarafDistributionConfigurationFileOption> optionsToApply = optionMap.get(configFile).values();
+            for (KarafDistributionConfigurationFileOption optionToApply : optionsToApply) {
                 if (optionToApply instanceof KarafDistributionConfigurationFilePutOption) {
                     karafPropertiesFile.put(optionToApply.getKey(), optionToApply.getValue());
                 } else {
