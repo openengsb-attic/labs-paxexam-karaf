@@ -23,12 +23,12 @@
   <parent>
     <groupId>org.openengsb.labs.paxexam.karaf</groupId>
     <artifactId>paxexam-karaf</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2-SNAPSHOT</version>
   </parent>
 
   <groupId>org.openengsb.labs.paxexam.karaf</groupId>
   <artifactId>paxexam-karaf-regression</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>OPS4J Pax Exam :: Karaf :: Regression Tests</name>
