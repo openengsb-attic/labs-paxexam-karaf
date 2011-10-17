@@ -24,12 +24,12 @@
   <parent>
     <groupId>org.openengsb.labs.paxexam.karaf</groupId>
     <artifactId>paxexam-karaf</artifactId>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.2.2</version>
   </parent>
 
   <groupId>org.openengsb.labs.paxexam.karaf</groupId>
   <artifactId>paxexam-karaf-options</artifactId>
-  <version>0.2.2-SNAPSHOT</version>
+  <version>0.2.2</version>
   <packaging>bundle</packaging>
 
   <name>OPS4J Pax Exam :: Karaf :: Test Options</name>

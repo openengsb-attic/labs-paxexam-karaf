@@ -29,7 +29,7 @@
 
   <groupId>org.openengsb.labs.paxexam.karaf</groupId>
   <artifactId>paxexam-karaf</artifactId>
-  <version>0.2.2-SNAPSHOT</version>
+  <version>0.2.2</version>
   <packaging>pom</packaging>
 
   <name>OPS4J Pax Exam :: Karaf</name>
