@@ -33,6 +33,7 @@ public class KarafDistributionConfigurationOption implements Option {
     private String name;
     private String karafVersion;
     private File unpackDirectory;
+    private boolean useDeployFolder;
 
     public KarafDistributionConfigurationOption() {
         frameworkURL = null;
@@ -98,6 +99,17 @@ public class KarafDistributionConfigurationOption implements Option {
         return this;
     }
 
+    /**
+     * Per default the framework simply copies all referenced artifacts (via Pax Exam DistributionOption) to the deploy
+     * folder of the karaf (based) distribution. If you don't have such a folder (for any reason) you can set this
+     * option to false. PaxExam Karaf will then try to add those deployment urls directly to a features xml instead of
+     * copying those files to the deploy folder.
+     */
+    public KarafDistributionConfigurationOption useDeployFolder(boolean useDeployFolder) {
+        this.useDeployFolder = useDeployFolder;
+        return this;
+    }
+
     public String getFrameworkURL() {
         if (frameworkURL == null && frameworkURLReference == null) {
             throw new IllegalStateException("Either frameworkurl or frameworkUrlReference need to be set.");
@@ -115,6 +127,10 @@ public class KarafDistributionConfigurationOption implements Option {
 
     public File getUnpackDirectory() {
         return unpackDirectory;
+    }
+
+    public boolean isUseDeployFolder() {
+        return useDeployFolder;
     }
 
 }

@@ -30,6 +30,10 @@ public class ExamFeaturesFile {
     private String featuresXml;
 
     public ExamFeaturesFile() {
+        this("");
+    }
+
+    public ExamFeaturesFile(String extension) {
         featuresXml =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                     + "<features name=\"pax-exam-features-"
@@ -54,6 +58,7 @@ public class ExamFeaturesFile {
                     + "</bundle>\n"
                     + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion() + "</bundle>\n"
                     + "</feature>\n"
+                    + extension + "\n"
                     + "</features>";
     }
 
@@ -93,7 +98,7 @@ public class ExamFeaturesFile {
     public void adaptDistributionToStartExam(File karafHome, File featuresXmlFile) throws IOException {
         KarafPropertiesFile karafPropertiesFile = new KarafPropertiesFile(karafHome, Constants.FEATURES_CFG_LOCATION);
         karafPropertiesFile.load();
-        String finalFilePath = ",file:" + featuresXmlFile.toString().replaceAll("\\\\","/");
+        String finalFilePath = ",file:" + featuresXmlFile.toString().replaceAll("\\\\", "/");
         karafPropertiesFile.extend("featuresRepositories", finalFilePath);
         karafPropertiesFile.extend("featuresBoot", ",exam");
         karafPropertiesFile.store();

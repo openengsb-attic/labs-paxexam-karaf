@@ -157,9 +157,15 @@ public class KarafTestContainer implements TestContainer {
             updateUserSetProperties(karafHome, subsystem);
             setupExamProperties(karafHome, subsystem);
             makeScriptsInBinExec(karafBin);
-            copyReferencedArtifactsToDeployFolder(deploy, subsystem, fileEndings);
 
-            ExamFeaturesFile examFeaturesFile = new ExamFeaturesFile();
+            ExamFeaturesFile examFeaturesFile;
+            if (framework.isUseDeployFolder()) {
+                copyReferencedArtifactsToDeployFolder(deploy, subsystem, fileEndings);
+                examFeaturesFile = new ExamFeaturesFile();
+            } else {
+                StringBuilder extension = extractExtensionString(subsystem);
+                examFeaturesFile = new ExamFeaturesFile(extension.toString());
+            }
             examFeaturesFile.writeToFile(featuresXmlFile);
 
             examFeaturesFile.adaptDistributionToStartExam(karafHome, featuresXmlFile);
@@ -187,6 +193,16 @@ public class KarafTestContainer implements TestContainer {
             throw new RuntimeException("Problem starting container", e);
         }
         return this;
+    }
+
+    @SuppressWarnings("rawtypes")
+    private StringBuilder extractExtensionString(ExamSystem subsystem) {
+        ProvisionOption[] provisionOptions = subsystem.getOptions(ProvisionOption.class);
+        StringBuilder extension = new StringBuilder();
+        for (ProvisionOption provisionOption : provisionOptions) {
+            extension.append("<bundle>").append(provisionOption.getURL()).append("</bundle>\n");
+        }
+        return extension;
     }
 
     private String shouldRemoteShellBeStarted(ExamSystem subsystem) {
