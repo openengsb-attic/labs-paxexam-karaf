@@ -36,8 +36,8 @@ public class BaseKarafDefaultFrameworkKeepRuntimeFolderTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.3/zip", "karaf",
-            "2.2.3").unpackDirectory(new File("target/paxexam/unpack/")) };
+        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.4/zip", "karaf",
+            "2.2.4").unpackDirectory(new File("target/paxexam/unpack/")) };
     }
 
     @Test

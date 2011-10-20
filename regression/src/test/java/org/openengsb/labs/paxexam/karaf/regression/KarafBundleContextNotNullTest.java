@@ -57,8 +57,8 @@ public class KarafBundleContextNotNullTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.3/zip", "karaf",
-            "2.2.3") };
+        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.4/zip", "karaf",
+            "2.2.4") };
     }
 
     @Test

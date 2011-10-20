@@ -36,8 +36,8 @@ public class BaseKarafEquinoxFrameworkTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.3/zip", "karaf",
-            "2.2.3"), editConfigurationFilePut(CustomProperties.KARAF_FRAMEWORK, "equinox") };
+        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.4/zip", "karaf",
+            "2.2.4"), editConfigurationFilePut(CustomProperties.KARAF_FRAMEWORK, "equinox") };
     }
 
     @Test
