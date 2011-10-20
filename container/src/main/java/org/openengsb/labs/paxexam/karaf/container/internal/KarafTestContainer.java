@@ -158,7 +158,8 @@ public class KarafTestContainer implements TestContainer {
             //
             // set DEFAULT_JAVA_DEBUG_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE
             // -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
-            String javaOpts = "";
+            ArrayList<String> javaOpts = Lists.newArrayList();
+            appendVmSettingsFromSystem(javaOpts, subsystem);
             String[] javaEndorsedDirs =
                 new String[]{ javaHome + "/jre/lib/endorsed", javaHome + "/lib/endorsed", karafHome + "/lib/endorsed" };
             String[] javaExtDirs =
@@ -167,7 +168,7 @@ public class KarafTestContainer implements TestContainer {
             ArrayList<String> opts =
                 Lists.newArrayList("-Dkaraf.startLocalConsole=" + shouldLocalConsoleBeStarted(subsystem),
                     "-Dkaraf.startRemoteShell=" + shouldRemoteShellBeStarted(subsystem));
-            appendVmSettingsFromSystem(opts, subsystem);
+
             String[] classPath = buildKarafClasspath(karafHome);
             String main = "org.apache.karaf.main.Main";
             String options = "";
@@ -187,8 +188,9 @@ public class KarafTestContainer implements TestContainer {
 
             long startedAt = System.currentTimeMillis();
 
-            javaRunner.exec(environment, karafBase, javaHome.toString(), javaOpts, javaEndorsedDirs, javaExtDirs,
-                karafHome.toString(), karafData, karafOpts, opts.toArray(new String[]{}), classPath, main, options);
+            javaRunner.exec(environment, karafBase, javaHome.toString(), javaOpts.toArray(new String[]{}),
+                javaEndorsedDirs, javaExtDirs, karafHome.toString(), karafData, karafOpts,
+                opts.toArray(new String[]{}), classPath, main, options);
 
             LOGGER.debug("Test Container started in " + (System.currentTimeMillis() - startedAt) + " millis");
             LOGGER.info("Wait for test container to finish its initialization " + subsystem.getTimeout());
@@ -306,7 +308,8 @@ public class KarafTestContainer implements TestContainer {
         HashMap<String, HashMap<String, KarafDistributionConfigurationFileOption>> optionMap = Maps.newHashMap();
         for (KarafDistributionConfigurationFileOption option : options) {
             if (!optionMap.containsKey(option.getConfigurationFilePath())) {
-                optionMap.put(option.getConfigurationFilePath(), new HashMap<String, KarafDistributionConfigurationFileOption>());
+                optionMap.put(option.getConfigurationFilePath(),
+                    new HashMap<String, KarafDistributionConfigurationFileOption>());
             }
             HashMap<String, KarafDistributionConfigurationFileOption> optionEntries =
                 optionMap.get(option.getConfigurationFilePath());

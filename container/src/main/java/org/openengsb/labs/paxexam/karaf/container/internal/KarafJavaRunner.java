@@ -38,7 +38,7 @@ public class KarafJavaRunner {
     }
 
     public synchronized void
-        exec(final String[] environment, final File karafBase, final String javaHome, final String javaOpts,
+        exec(final String[] environment, final File karafBase, final String javaHome, final String[] javaOpts,
                 final String[] javaEndorsedDirs,
                 final String[] javaExtDirs, final String karafHome, final String karafData, final String[] karafOpts,
                 final String[] opts, final String[] classPath, final String main, final String options) {
