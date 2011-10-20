@@ -56,6 +56,7 @@ import org.openengsb.labs.paxexam.karaf.options.DoNotModifyLogOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationConsoleOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFilePutOption;
+import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileReplacementOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KeepRuntimeFolderOption;
 import org.openengsb.labs.paxexam.karaf.options.LogLevelOption;
@@ -327,6 +328,9 @@ public class KarafTestContainer implements TestContainer {
             for (KarafDistributionConfigurationFileOption optionToApply : optionsToApply) {
                 if (optionToApply instanceof KarafDistributionConfigurationFilePutOption) {
                     karafPropertiesFile.put(optionToApply.getKey(), optionToApply.getValue());
+                } else if (optionToApply instanceof KarafDistributionConfigurationFileReplacementOption) {
+                    karafPropertiesFile.replace(((KarafDistributionConfigurationFileReplacementOption) optionToApply)
+                        .getSource());
                 } else {
                     karafPropertiesFile.extend(optionToApply.getKey(), optionToApply.getValue());
                 }

@@ -39,6 +39,10 @@ public abstract class KarafDistributionConfigurationFileOption implements Option
         this.value = value;
     }
 
+    public KarafDistributionConfigurationFileOption(String configurationFilePath) {
+        this.configurationFilePath = configurationFilePath;
+    }
+
     public String getConfigurationFilePath() {
         return configurationFilePath;
     }
@@ -50,4 +54,5 @@ public abstract class KarafDistributionConfigurationFileOption implements Option
     public String getValue() {
         return value;
     }
+
 }

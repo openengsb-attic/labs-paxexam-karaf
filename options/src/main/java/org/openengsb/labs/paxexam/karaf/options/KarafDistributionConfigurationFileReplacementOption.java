@@ -17,22 +17,24 @@
 
 package org.openengsb.labs.paxexam.karaf.options;
 
+import java.io.File;
 
 /**
- * This option allows to extend configurations in each configuration file based on the karaf.home location. The value
- * extends the current value (e.g. a=b to a=a,b) instead of replacing it. If there is no current value it is added.
- *
- * If you would like to have add or replace functionality please use the
- * {@link KarafDistributionConfigurationFilePutOption} instead.
+ * If you do not want to replace (or extend) values in a file but rather simply want to replace a configuration file
+ * "brute force" this option is the one of your choice. It simply removes the original file and replaces it with the one
+ * configured here.
  */
-public class KarafDistributionConfigurationFileExtendOption extends KarafDistributionConfigurationFileOption {
+public class KarafDistributionConfigurationFileReplacementOption extends KarafDistributionConfigurationFileOption {
 
-    public KarafDistributionConfigurationFileExtendOption(String configurationFilePath, String key, String value) {
-        super(configurationFilePath, key, value);
+    private File source;
+
+    public KarafDistributionConfigurationFileReplacementOption(String configurationFilePath, File source) {
+        super(configurationFilePath);
+        this.source = source;
     }
 
-    public KarafDistributionConfigurationFileExtendOption(ConfigurationPointer pointer, String value) {
-        super(pointer, value);
+    public File getSource() {
+        return source;
     }
 
 }

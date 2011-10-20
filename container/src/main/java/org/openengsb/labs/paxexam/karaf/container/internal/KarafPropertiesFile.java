@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
+
 public class KarafPropertiesFile {
 
     private final Properties properties;
@@ -62,6 +64,14 @@ public class KarafPropertiesFile {
 
     public void store() throws IOException {
         properties.store(new FileOutputStream(propertyFile), "Modified by paxexam");
+    }
+
+    public void replace(File source) {
+        try {
+            FileUtils.copyFile(source, propertyFile);
+        } catch (IOException e) {
+            throw new IllegalStateException("It is required to replace propertyFile");
+        }
     }
 
 }

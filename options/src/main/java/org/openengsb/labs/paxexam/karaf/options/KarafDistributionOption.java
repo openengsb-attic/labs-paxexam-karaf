@@ -19,6 +19,15 @@ package org.openengsb.labs.paxexam.karaf.options;
 
 import static java.lang.String.format;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+
 import org.openengsb.labs.paxexam.karaf.options.LogLevelOption.LogLevel;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.options.extra.VMOption;
@@ -73,7 +82,7 @@ public final class KarafDistributionOption {
     /**
      * This option allows to configure each configuration fille based on the karaf.home location. The value is "put".
      * Which means it is either replaced or added.
-     * 
+     *
      * If you like to extend an option (e.g. make a=b to a=b,c) please make use of the
      * {@link KarafDistributionConfigurationFileExtendOption}.
      */
@@ -84,7 +93,7 @@ public final class KarafDistributionOption {
     /**
      * This option allows to configure each configuration fille based on the karaf.home location. The value is "put".
      * Which means it is either replaced or added.
-     * 
+     *
      * If you like to extend an option (e.g. make a=b to a=b,c) please make use of the
      * {@link KarafDistributionConfigurationFileExtendOption}.
      */
@@ -93,10 +102,57 @@ public final class KarafDistributionOption {
     }
 
     /**
+     * This option allows to configure each configuration file based on the karaf.home location. The value is "put"
+     * which means it is either replaced or added. For simpler configuration you can add a file source. If you want to
+     * put all values from this file do not configure any keysToUseFromSource; otherwise define them to use only those
+     * specific values.
+     */
+    public static Option[] editConfigurationFilePut(final String configurationFilePath,
+            File source, String... keysToUseFromSource) {
+        return createOptionListFromFile(source, new FileOptionFactory() {
+            @Override
+            public Option createOption(String key, String value) {
+                return new KarafDistributionConfigurationFilePutOption(configurationFilePath, key, value);
+            }
+        }, keysToUseFromSource);
+    }
+
+    private static interface FileOptionFactory {
+        Option createOption(String key, String value);
+    }
+
+    private static Option[] createOptionListFromFile(File source, FileOptionFactory optionFactory,
+            String... keysToUseFromSource) {
+        Properties props = new Properties();
+        try {
+            props.load(new FileInputStream(source));
+        } catch (FileNotFoundException e) {
+            throw new IllegalStateException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        List<Option> options =
+            new ArrayList<Option>();
+        if (keysToUseFromSource == null || keysToUseFromSource.length == 0) {
+            Set<Object> keySet = props.keySet();
+            for (Object key : keySet) {
+                Object value = props.get(key);
+                options.add(optionFactory.createOption((String) key, (String) value));
+            }
+        } else {
+            for (String key : keysToUseFromSource) {
+                Object value = props.get(key);
+                options.add(optionFactory.createOption(key, (String) value));
+            }
+        }
+        return options.toArray(new Option[]{});
+    }
+
+    /**
      * This option allows to extend configurations in each configuration file based on the karaf.home location. The
      * value extends the current value (e.g. a=b to a=a,b) instead of replacing it. If there is no current value it is
      * added.
-     * 
+     *
      * If you would like to have add or replace functionality please use the
      * {@link KarafDistributionConfigurationFilePutOption} instead.
      */
@@ -108,12 +164,36 @@ public final class KarafDistributionOption {
      * This option allows to extend configurations in each configuration file based on the karaf.home location. The
      * value extends the current value (e.g. a=b to a=a,b) instead of replacing it. If there is no current value it is
      * added.
-     * 
+     *
      * If you would like to have add or replace functionality please use the
      * {@link KarafDistributionConfigurationFilePutOption} instead.
      */
     public static Option editConfigurationFileExtend(ConfigurationPointer configurationPointer, String value) {
         return new KarafDistributionConfigurationFileExtendOption(configurationPointer, value);
+    }
+
+    /**
+     * This option allows to configure each configuration file based on the karaf.home location. The value is "extend"
+     * which means it is either replaced or added. For simpler configuration you can add a file source. If you want to
+     * put all values from this file do not configure any keysToUseFromSource; otherwise define them to use only those
+     * specific values.
+     */
+    public static Option[] editConfigurationFileExtend(final String configurationFilePath, File source,
+            String... keysToUseFromSource) {
+        return createOptionListFromFile(source, new FileOptionFactory() {
+            @Override
+            public Option createOption(String key, String value) {
+                return new KarafDistributionConfigurationFileExtendOption(configurationFilePath, key, value);
+            }
+        }, keysToUseFromSource);
+    }
+
+    /**
+     * This option allows to simply replace an entire configuration file with your own one. Simply point to the
+     * configuration file you would like to have replaced and add the source file which should replace it.
+     */
+    public static Option replaceConfigurationFile(String configurationFilePath, File source) {
+        return new KarafDistributionConfigurationFileReplacementOption(configurationFilePath, source);
     }
 
     /**
