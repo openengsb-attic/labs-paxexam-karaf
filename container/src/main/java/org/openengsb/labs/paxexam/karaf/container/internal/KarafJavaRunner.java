@@ -48,12 +48,6 @@ public class KarafJavaRunner {
                 String cp = buildCmdSeparatedString(classPath);
                 String endDirs = buildCmdSeparatedString(javaEndorsedDirs);
                 String extDirs = buildCmdSeparatedString(javaExtDirs);
-
-                // exec "$JAVA" $JAVA_OPTS -Djava.endorsed.dirs="${JAVA_ENDORSED_DIRS}"
-                // -Djava.ext.dirs="${JAVA_EXT_DIRS}" -Dkaraf.instances="${KARAF_HOME}/instances"
-                // -Dkaraf.home="$KARAF_HOME" -Dkaraf.base="$KARAF_BASE" -Dkaraf.data="$KARAF_DATA"
-                // -Djava.util.logging.config.file="$KARAF_BASE/etc/java.util.logging.properties" $KARAF_OPTS $OPTS
-                // -classpath "$CLASSPATH" $MAIN "$@"
                 final CommandLineBuilder commandLine = new CommandLineBuilder()
                     .append(getJavaExecutable(javaHome))
                     .append(javaOpts)
@@ -70,7 +64,6 @@ public class KarafJavaRunner {
                     .append(cp)
                     .append(main)
                     .append(options);
-
                 runner.exec(commandLine, karafBase, environment);
             }
 
