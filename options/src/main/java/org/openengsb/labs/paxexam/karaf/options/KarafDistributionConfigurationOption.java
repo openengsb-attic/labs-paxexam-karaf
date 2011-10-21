@@ -33,7 +33,7 @@ public class KarafDistributionConfigurationOption implements Option {
     private String name;
     private String karafVersion;
     private File unpackDirectory;
-    private boolean useDeployFolder;
+    private boolean useDeployFolder = true;
 
     public KarafDistributionConfigurationOption() {
         frameworkURL = null;
