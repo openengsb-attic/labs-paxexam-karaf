@@ -315,20 +315,25 @@ public class KarafTestContainer implements TestContainer {
         }
         Set<String> configFiles = optionMap.keySet();
         for (String configFile : configFiles) {
-            KarafPropertiesFile karafPropertiesFile = new KarafPropertiesFile(karafHome, configFile);
-            karafPropertiesFile.load();
-            Collection<KarafDistributionConfigurationFileOption> optionsToApply = optionMap.get(configFile).values();
-            for (KarafDistributionConfigurationFileOption optionToApply : optionsToApply) {
-                if (optionToApply instanceof KarafDistributionConfigurationFilePutOption) {
-                    karafPropertiesFile.put(optionToApply.getKey(), optionToApply.getValue());
-                } else if (optionToApply instanceof KarafDistributionConfigurationFileReplacementOption) {
-                    karafPropertiesFile.replace(((KarafDistributionConfigurationFileReplacementOption) optionToApply)
-                        .getSource());
-                } else {
-                    karafPropertiesFile.extend(optionToApply.getKey(), optionToApply.getValue());
+            HANDLING: {
+                KarafPropertiesFile karafPropertiesFile = new KarafPropertiesFile(karafHome, configFile);
+                karafPropertiesFile.load();
+                Collection<KarafDistributionConfigurationFileOption> optionsToApply =
+                    optionMap.get(configFile).values();
+                for (KarafDistributionConfigurationFileOption optionToApply : optionsToApply) {
+                    if (optionToApply instanceof KarafDistributionConfigurationFilePutOption) {
+                        karafPropertiesFile.put(optionToApply.getKey(), optionToApply.getValue());
+                    } else if (optionToApply instanceof KarafDistributionConfigurationFileReplacementOption) {
+                        karafPropertiesFile
+                            .replace(((KarafDistributionConfigurationFileReplacementOption) optionToApply)
+                                .getSource());
+                        break HANDLING; // we don't need to store in that case; only the first one is relevant.
+                    } else {
+                        karafPropertiesFile.extend(optionToApply.getKey(), optionToApply.getValue());
+                    }
                 }
+                karafPropertiesFile.store();
             }
-            karafPropertiesFile.store();
         }
     }
 
