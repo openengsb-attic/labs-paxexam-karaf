@@ -54,12 +54,14 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openengsb.labs.paxexam.karaf.options.DoNotModifyLogOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationConsoleOption;
+import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileExtendOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFilePutOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileReplacementOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KeepRuntimeFolderOption;
 import org.openengsb.labs.paxexam.karaf.options.LogLevelOption;
+import org.openengsb.labs.paxexam.karaf.options.configs.FeaturesCfg;
 import org.ops4j.pax.exam.ExamSystem;
 import org.ops4j.pax.exam.RelativeTimeout;
 import org.ops4j.pax.exam.TestAddress;
@@ -69,6 +71,7 @@ import org.ops4j.pax.exam.container.remote.RBCRemoteTarget;
 import org.ops4j.pax.exam.options.ProvisionOption;
 import org.ops4j.pax.exam.options.ServerModeOption;
 import org.ops4j.pax.exam.options.SystemPropertyOption;
+import org.ops4j.pax.exam.options.extra.FeaturesScannerProvisionOption;
 import org.ops4j.pax.exam.options.extra.VMOption;
 import org.ops4j.pax.exam.rbc.client.RemoteBundleContextClient;
 import org.osgi.framework.Bundle;
@@ -297,8 +300,9 @@ public class KarafTestContainer implements TestContainer {
     }
 
     private void updateUserSetProperties(File karafHome, ExamSystem subsystem) throws IOException {
-        KarafDistributionConfigurationFileOption[] options =
-            subsystem.getOptions(KarafDistributionConfigurationFileOption.class);
+        List<KarafDistributionConfigurationFileOption> options = Lists.newArrayList(
+            subsystem.getOptions(KarafDistributionConfigurationFileOption.class));
+        options.addAll(extractFileOptionsBasedOnFeaturesScannerOptions(subsystem));
         HashMap<String, HashMap<String, KarafDistributionConfigurationFileOption>> optionMap = Maps.newHashMap();
         for (KarafDistributionConfigurationFileOption option : options) {
             if (!optionMap.containsKey(option.getConfigurationFilePath())) {
@@ -335,6 +339,20 @@ public class KarafTestContainer implements TestContainer {
                 karafPropertiesFile.store();
             }
         }
+    }
+
+    private Collection<? extends KarafDistributionConfigurationFileOption>
+        extractFileOptionsBasedOnFeaturesScannerOptions(ExamSystem subsystem) {
+        ArrayList<KarafDistributionConfigurationFileOption> retVal = Lists.newArrayList();
+        FeaturesScannerProvisionOption[] features = subsystem.getOptions(FeaturesScannerProvisionOption.class);
+        for (FeaturesScannerProvisionOption feature : features) {
+            String fullFeatureUrl = feature.getURL();
+            String[] split = fullFeatureUrl.split("\\!/");
+            String url = split[0].replaceAll("scan-features:", "");
+            retVal.add(new KarafDistributionConfigurationFileExtendOption(FeaturesCfg.REPOSITORIES, "," + url));
+            retVal.add(new KarafDistributionConfigurationFileExtendOption(FeaturesCfg.BOOT, "," + split[1]));
+        }
+        return retVal;
     }
 
     private void setupExamProperties(File karafHome, ExamSystem system) throws IOException {
