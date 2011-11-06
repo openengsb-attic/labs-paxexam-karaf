@@ -418,7 +418,7 @@ public class KarafTestContainer implements TestContainer {
 
     private String[] buildKarafClasspath(File karafHome) {
         List<String> cp = new ArrayList<String>();
-        File[] jars = new File(karafHome + "/lib").listFiles((FileFilter) new WildcardFileFilter("karaf*.jar"));
+        File[] jars = new File(karafHome + "/lib").listFiles((FileFilter) new WildcardFileFilter("*.jar"));
         for (File jar : jars) {
             cp.add(jar.toString());
         }
