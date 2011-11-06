@@ -72,6 +72,7 @@ import org.ops4j.pax.exam.container.remote.RBCRemoteTarget;
 import org.ops4j.pax.exam.options.BootDelegationOption;
 import org.ops4j.pax.exam.options.ProvisionOption;
 import org.ops4j.pax.exam.options.ServerModeOption;
+import org.ops4j.pax.exam.options.SystemPackageOption;
 import org.ops4j.pax.exam.options.SystemPropertyOption;
 import org.ops4j.pax.exam.options.extra.FeaturesScannerProvisionOption;
 import org.ops4j.pax.exam.options.extra.VMOption;
@@ -306,6 +307,7 @@ public class KarafTestContainer implements TestContainer {
             subsystem.getOptions(KarafDistributionConfigurationFileOption.class));
         options.addAll(extractFileOptionsBasedOnFeaturesScannerOptions(subsystem));
         options.addAll(configureBootDelegation(subsystem));
+        options.addAll(configureSystemBundles(subsystem));
         HashMap<String, HashMap<String, KarafDistributionConfigurationFileOption>> optionMap = Maps.newHashMap();
         for (KarafDistributionConfigurationFileOption option : options) {
             if (!optionMap.containsKey(option.getConfigurationFilePath())) {
@@ -342,6 +344,19 @@ public class KarafTestContainer implements TestContainer {
                 karafPropertiesFile.store();
             }
         }
+    }
+
+    private Collection<? extends KarafDistributionConfigurationFileOption> configureSystemBundles(ExamSystem subsystem) {
+        SystemPackageOption[] systemPackageOptions = subsystem.getOptions(SystemPackageOption.class);
+        String systemPackageString = "";
+        for (SystemPackageOption systemPackageOption : systemPackageOptions) {
+            if (!systemPackageString.equals("")) {
+                systemPackageString += ",";
+            }
+            systemPackageString += systemPackageOption.getValue();
+        }
+        return Lists.newArrayList(new KarafDistributionConfigurationFileExtendOption(
+            CustomProperties.SYSTEM_PACKAGES_EXTRA, systemPackageString));
     }
 
     private Collection<? extends KarafDistributionConfigurationFileOption>
