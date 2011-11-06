@@ -53,6 +53,8 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulator;
+import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulatorFactory;
 import org.openengsb.labs.paxexam.karaf.options.DoNotModifyLogOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationConsoleOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileExtendOption;
@@ -96,6 +98,8 @@ public class KarafTestContainer implements TestContainer {
     private final RMIRegistry registry;
     private final ExamSystem system;
     private final KarafDistributionConfigurationOption framework;
+    @SuppressWarnings("unused")
+    private final KarafManipulator versionAdaptions;
 
     private boolean deleteRuntime = true;
     private boolean started = false;
@@ -107,7 +111,7 @@ public class KarafTestContainer implements TestContainer {
         this.framework = framework;
         this.registry = registry;
         this.system = system;
-
+        versionAdaptions = KarafManipulatorFactory.createManipulator(framework.getKarafVersion());
         javaRunner = new KarafJavaRunner();
     }
 
