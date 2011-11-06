@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import org.openengsb.labs.paxexam.karaf.options.KarafDistributionBaseConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
 
 /**
@@ -18,7 +19,7 @@ public class InternalKarafDistributionConfigurationOption extends KarafDistribut
     private File distributionInfo;
 
     public InternalKarafDistributionConfigurationOption(
-            KarafDistributionConfigurationOption distributionConfigurationOption, File distributionInfo) {
+            KarafDistributionBaseConfigurationOption distributionConfigurationOption, File distributionInfo) {
         super(distributionConfigurationOption);
         this.distributionInfo = distributionInfo;
     }

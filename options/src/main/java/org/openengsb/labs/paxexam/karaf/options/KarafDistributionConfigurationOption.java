@@ -17,132 +17,29 @@
 
 package org.openengsb.labs.paxexam.karaf.options;
 
-import java.io.File;
-
-import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.options.MavenUrlReference;
 
 /**
  * Option describing the karaf distribution to use. Without this option no karaf based distribution can be used in exam
  * tests.
  */
-public class KarafDistributionConfigurationOption implements Option {
-
-    private String frameworkURL;
-    private MavenUrlReference frameworkURLReference;
-    private String name;
-    private String karafVersion;
-    private File unpackDirectory;
-    private boolean useDeployFolder = true;
+public class KarafDistributionConfigurationOption extends KarafDistributionBaseConfigurationOption {
 
     public KarafDistributionConfigurationOption() {
-        frameworkURL = null;
-        frameworkURLReference = null;
-        name = null;
-        karafVersion = null;
+        super();
     }
 
-    public KarafDistributionConfigurationOption(String frameworkURL, String name, String karafVersion) {
-        this.frameworkURL = frameworkURL;
-        frameworkURLReference = null;
-        this.name = name;
-        this.karafVersion = karafVersion;
+    public KarafDistributionConfigurationOption(KarafDistributionBaseConfigurationOption base) {
+        super(base);
     }
 
     public KarafDistributionConfigurationOption(MavenUrlReference frameworkURLReference, String name,
             String karafVersion) {
-        frameworkURL = null;
-        this.frameworkURLReference = frameworkURLReference;
-        this.name = name;
-        this.karafVersion = karafVersion;
+        super(frameworkURLReference, name, karafVersion);
     }
 
-    /**
-     * Simply clones the insterted {@link KarafDistributionConfigurationOption}
-     */
-    public KarafDistributionConfigurationOption(KarafDistributionConfigurationOption base) {
-        frameworkURL = base.frameworkURL;
-        frameworkURLReference = base.frameworkURLReference;
-        name = base.name;
-        karafVersion = base.karafVersion;
-        unpackDirectory = base.unpackDirectory;
-        useDeployFolder = base.useDeployFolder;
-    }
-
-    /**
-     * Sets the URL of the framework as a String (for example a file).
-     */
-    public KarafDistributionConfigurationOption frameworkUrl(String frameworkURL) {
-        this.frameworkURL = frameworkURL;
-        return this;
-    }
-
-    /**
-     * Sets the URL of the frameworks as a maven reference.
-     */
-    public KarafDistributionConfigurationOption frameworkUrl(MavenUrlReference frameworkURL) {
-        frameworkURLReference = frameworkURL;
-        return this;
-    }
-
-    /**
-     * Set's the name of the framework. This is only used for logging.
-     */
-    public KarafDistributionConfigurationOption name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * The version of karaf used by the framework. That one is required since there is the high possibility that
-     * configuration is different between various karaf versions.
-     */
-    public KarafDistributionConfigurationOption karafVersion(String karafVersion) {
-        this.karafVersion = karafVersion;
-        return this;
-    }
-
-    /**
-     * Define the unpack directory for the karaf distribution. In this directory a UUID named directory will be created
-     * for each environment.
-     */
-    public KarafDistributionConfigurationOption unpackDirectory(File unpackDirectory) {
-        this.unpackDirectory = unpackDirectory;
-        return this;
-    }
-
-    /**
-     * Per default the framework simply copies all referenced artifacts (via Pax Exam DistributionOption) to the deploy
-     * folder of the karaf (based) distribution. If you don't have such a folder (for any reason) you can set this
-     * option to false. PaxExam Karaf will then try to add those deployment urls directly to a features xml instead of
-     * copying those files to the deploy folder.
-     */
-    public KarafDistributionConfigurationOption useDeployFolder(boolean useDeployFolder) {
-        this.useDeployFolder = useDeployFolder;
-        return this;
-    }
-
-    public String getFrameworkURL() {
-        if (frameworkURL == null && frameworkURLReference == null) {
-            throw new IllegalStateException("Either frameworkurl or frameworkUrlReference need to be set.");
-        }
-        return frameworkURL != null ? frameworkURL : frameworkURLReference.getURL();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getKarafVersion() {
-        return karafVersion;
-    }
-
-    public File getUnpackDirectory() {
-        return unpackDirectory;
-    }
-
-    public boolean isUseDeployFolder() {
-        return useDeployFolder;
+    public KarafDistributionConfigurationOption(String frameworkURL, String name, String karafVersion) {
+        super(frameworkURL, name, karafVersion);
     }
 
 }

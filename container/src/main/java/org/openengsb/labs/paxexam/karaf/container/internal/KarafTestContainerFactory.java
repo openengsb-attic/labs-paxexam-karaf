@@ -20,6 +20,7 @@ package org.openengsb.labs.paxexam.karaf.container.internal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openengsb.labs.paxexam.karaf.options.KarafDistributionBaseConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
 import org.ops4j.pax.exam.ExamSystem;
 import org.ops4j.pax.exam.TestContainer;
@@ -31,9 +32,7 @@ public class KarafTestContainerFactory
     private RMIRegistry m_rmiRegistry;
     private static final int DEFAULTPORT = 21412;
 
-    public KarafTestContainerFactory()
-
-    {
+    public KarafTestContainerFactory() {
         m_rmiRegistry = new RMIRegistry(DEFAULTPORT, DEFAULTPORT + 1, DEFAULTPORT + 99).selectGracefully();
     }
 
@@ -43,13 +42,13 @@ public class KarafTestContainerFactory
     @Override
     public TestContainer[] create(ExamSystem system)
     {
-        KarafDistributionConfigurationOption[] options = system.getOptions(KarafDistributionConfigurationOption.class);
+        KarafDistributionBaseConfigurationOption[] options = system.getOptions(KarafDistributionConfigurationOption.class);
         if (options == null || options.length == 0) {
             throw new IllegalStateException(
                 "It is required to define which distribution you would like to use for your karaf distribution based test cases.");
         }
         List<TestContainer> containers = new ArrayList<TestContainer>();
-        for (KarafDistributionConfigurationOption testContainer : options) {
+        for (KarafDistributionBaseConfigurationOption testContainer : options) {
             containers.add(new KarafTestContainer(system, m_rmiRegistry, testContainer));
         }
         return containers.toArray(new TestContainer[containers.size()]);

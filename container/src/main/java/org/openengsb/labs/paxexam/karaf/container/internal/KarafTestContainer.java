@@ -57,12 +57,12 @@ import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipu
 import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulatorFactory;
 import org.openengsb.labs.paxexam.karaf.container.internal.runner.KarafJavaRunner;
 import org.openengsb.labs.paxexam.karaf.options.DoNotModifyLogOption;
+import org.openengsb.labs.paxexam.karaf.options.KarafDistributionBaseConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationConsoleOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileExtendOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFilePutOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileReplacementOption;
-import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KeepRuntimeFolderOption;
 import org.openengsb.labs.paxexam.karaf.options.LogLevelOption;
 import org.openengsb.labs.paxexam.karaf.options.configs.CustomProperties;
@@ -98,7 +98,7 @@ public class KarafTestContainer implements TestContainer {
     private final KarafJavaRunner javaRunner;
     private final RMIRegistry registry;
     private final ExamSystem system;
-    private KarafDistributionConfigurationOption framework;
+    private KarafDistributionBaseConfigurationOption framework;
     @SuppressWarnings("unused")
     private KarafManipulator versionAdaptions;
 
@@ -108,7 +108,8 @@ public class KarafTestContainer implements TestContainer {
 
     private File targetFolder;
 
-    public KarafTestContainer(ExamSystem system, RMIRegistry registry, KarafDistributionConfigurationOption framework) {
+    public KarafTestContainer(ExamSystem system, RMIRegistry registry,
+            KarafDistributionBaseConfigurationOption framework) {
         this.framework = framework;
         this.registry = registry;
         this.system = system;
