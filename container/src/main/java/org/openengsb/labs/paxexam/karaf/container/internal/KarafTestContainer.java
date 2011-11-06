@@ -61,6 +61,7 @@ import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFi
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KeepRuntimeFolderOption;
 import org.openengsb.labs.paxexam.karaf.options.LogLevelOption;
+import org.openengsb.labs.paxexam.karaf.options.configs.CustomProperties;
 import org.openengsb.labs.paxexam.karaf.options.configs.FeaturesCfg;
 import org.ops4j.pax.exam.ExamSystem;
 import org.ops4j.pax.exam.RelativeTimeout;
@@ -68,6 +69,7 @@ import org.ops4j.pax.exam.TestAddress;
 import org.ops4j.pax.exam.TestContainer;
 import org.ops4j.pax.exam.TimeoutException;
 import org.ops4j.pax.exam.container.remote.RBCRemoteTarget;
+import org.ops4j.pax.exam.options.BootDelegationOption;
 import org.ops4j.pax.exam.options.ProvisionOption;
 import org.ops4j.pax.exam.options.ServerModeOption;
 import org.ops4j.pax.exam.options.SystemPropertyOption;
@@ -303,6 +305,7 @@ public class KarafTestContainer implements TestContainer {
         List<KarafDistributionConfigurationFileOption> options = Lists.newArrayList(
             subsystem.getOptions(KarafDistributionConfigurationFileOption.class));
         options.addAll(extractFileOptionsBasedOnFeaturesScannerOptions(subsystem));
+        options.addAll(configureBootDelegation(subsystem));
         HashMap<String, HashMap<String, KarafDistributionConfigurationFileOption>> optionMap = Maps.newHashMap();
         for (KarafDistributionConfigurationFileOption option : options) {
             if (!optionMap.containsKey(option.getConfigurationFilePath())) {
@@ -339,6 +342,18 @@ public class KarafTestContainer implements TestContainer {
                 karafPropertiesFile.store();
             }
         }
+    }
+
+    private Collection<? extends KarafDistributionConfigurationFileOption>
+        configureBootDelegation(ExamSystem subsystem) {
+        BootDelegationOption[] bootDelegationOptions = subsystem.getOptions(BootDelegationOption.class);
+        String bootDelegationString = "";
+        for (BootDelegationOption bootDelegationOption : bootDelegationOptions) {
+            bootDelegationString += ",";
+            bootDelegationString += bootDelegationOption.getValue();
+        }
+        return Lists.newArrayList(new KarafDistributionConfigurationFileExtendOption(CustomProperties.BOOTDELEGATION,
+            bootDelegationString));
     }
 
     private Collection<? extends KarafDistributionConfigurationFileOption>
