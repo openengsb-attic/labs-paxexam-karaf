@@ -50,7 +50,8 @@ public class BaseKarafDefaultFrameworkDuplicatedPropertyEntryFromFileTest {
     public Option[] config() {
         Option[] base =
             new Option[]{ karafDistributionConfiguration().frameworkUrl(
-                maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject()) };
+                maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject())
+                .karafVersion("2.2.4").name("Apache Karaf") };
         base =
             combine(
                 base,

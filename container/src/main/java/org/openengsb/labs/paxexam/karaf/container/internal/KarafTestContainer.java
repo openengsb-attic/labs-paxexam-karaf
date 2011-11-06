@@ -97,9 +97,9 @@ public class KarafTestContainer implements TestContainer {
     private final KarafJavaRunner javaRunner;
     private final RMIRegistry registry;
     private final ExamSystem system;
-    private final KarafDistributionConfigurationOption framework;
+    private KarafDistributionConfigurationOption framework;
     @SuppressWarnings("unused")
-    private final KarafManipulator versionAdaptions;
+    private KarafManipulator versionAdaptions;
 
     private boolean deleteRuntime = true;
     private boolean started = false;
@@ -111,7 +111,6 @@ public class KarafTestContainer implements TestContainer {
         this.framework = framework;
         this.registry = registry;
         this.system = system;
-        versionAdaptions = KarafManipulatorFactory.createManipulator(framework.getKarafVersion());
         javaRunner = new KarafJavaRunner();
     }
 
@@ -144,11 +143,16 @@ public class KarafTestContainer implements TestContainer {
 
             File javaHome = new File(System.getProperty("java.home"));
             File karafBase = searchKarafBase(targetFolder);
+            File distributionInfo = new File(karafBase + "/etc/distribution.info");
             File karafBin = new File(karafBase + "/bin");
             File featuresXmlFile = new File(targetFolder + "/examfeatures.xml");
             File karafHome = karafBase;
             File deploy = new File(karafBase + "/deploy");
             String karafData = karafHome + "/data";
+
+            framework = new InternalKarafDistributionConfigurationOption(framework, distributionInfo);
+            versionAdaptions = KarafManipulatorFactory.createManipulator(framework.getKarafVersion());
+
             ArrayList<String> javaOpts = Lists.newArrayList();
             appendVmSettingsFromSystem(javaOpts, subsystem);
             String[] javaEndorsedDirs =

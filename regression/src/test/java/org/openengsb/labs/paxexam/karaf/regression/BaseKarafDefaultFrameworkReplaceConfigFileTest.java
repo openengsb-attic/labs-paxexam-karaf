@@ -51,11 +51,13 @@ public class BaseKarafDefaultFrameworkReplaceConfigFileTest {
     @Configuration
     public Option[] config() {
         Option[] base =
-            new Option[]{ karafDistributionConfiguration().frameworkUrl(
-                maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject()).
-				unpackDirectory(new File("target/paxexam/unpack/")),
-				KarafDistributionOption.editConfigurationFilePut(CustomProperties.KARAF_FRAMEWORK, "equinox"),
-				KarafDistributionOption.keepRuntimeFolder() };
+            new Option[]{
+                karafDistributionConfiguration().frameworkUrl(
+                    maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject())
+                    .karafVersion("2.2.4").name("Apache Karaf").
+                    unpackDirectory(new File("target/paxexam/unpack/")),
+                KarafDistributionOption.editConfigurationFilePut(CustomProperties.KARAF_FRAMEWORK, "equinox"),
+                KarafDistributionOption.keepRuntimeFolder() };
         base =
             combine(
                 base,

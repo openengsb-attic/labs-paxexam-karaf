@@ -40,7 +40,7 @@ public class VersionAsInProjectOpenEngSBTest {
     public Option[] config() {
         return new Option[]{ karafDistributionConfiguration().frameworkUrl(
             maven().groupId("org.openengsb.framework").artifactId("openengsb-framework").type("zip")
-                .versionAsInProject()) };
+                .versionAsInProject()).karafVersion("2.2.4").name("Apache Karaf") };
     }
 
     @Test

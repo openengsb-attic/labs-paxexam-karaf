@@ -58,6 +58,18 @@ public class KarafDistributionConfigurationOption implements Option {
     }
 
     /**
+     * Simply clones the insterted {@link KarafDistributionConfigurationOption}
+     */
+    public KarafDistributionConfigurationOption(KarafDistributionConfigurationOption base) {
+        frameworkURL = base.frameworkURL;
+        frameworkURLReference = base.frameworkURLReference;
+        name = base.name;
+        karafVersion = base.karafVersion;
+        unpackDirectory = base.unpackDirectory;
+        useDeployFolder = base.useDeployFolder;
+    }
+
+    /**
      * Sets the URL of the framework as a String (for example a file).
      */
     public KarafDistributionConfigurationOption frameworkUrl(String frameworkURL) {
