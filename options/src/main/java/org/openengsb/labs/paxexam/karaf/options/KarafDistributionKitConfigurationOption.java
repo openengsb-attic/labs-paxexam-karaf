@@ -39,19 +39,28 @@ public class KarafDistributionKitConfigurationOption extends KarafDistributionBa
     public KarafDistributionKitConfigurationOption(KarafDistributionBaseConfigurationOption base,
             Platform platform) {
         super(base);
-        this.platform = platform;
+        setPlatform(platform);
     }
 
     public KarafDistributionKitConfigurationOption(MavenUrlReference frameworkURLReference, String name,
             String karafVersion, Platform platform) {
         super(frameworkURLReference, name, karafVersion);
-        this.platform = platform;
+        setPlatform(platform);
     }
 
     public KarafDistributionKitConfigurationOption(String frameworkURL, String name, String karafVersion,
             Platform platform) {
         super(frameworkURL, name, karafVersion);
+        setPlatform(platform);
+    }
+
+    private void setPlatform(Platform platform) {
         this.platform = platform;
+        if (platform.equals(Platform.WINDOWS)) {
+            exec = "bin\\karaf.bat";
+        } else {
+            exec = "bin/karaf";
+        }
     }
 
     public KarafDistributionKitConfigurationOption filesToMakeExecutable(String... platformRelativeFilePath) {

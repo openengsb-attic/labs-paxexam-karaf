@@ -59,6 +59,18 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.apache.karaf</groupId>
+      <artifactId>apache-karaf</artifactId>
+      <type>tar.gz</type>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.karaf.shell</groupId>
+          <artifactId>org.apache.karaf.shell.dev</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>org.apache.servicemix</groupId>
       <artifactId>apache-servicemix</artifactId>
       <type>zip</type>
