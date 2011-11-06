@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,11 +70,13 @@ import org.ops4j.pax.exam.TestAddress;
 import org.ops4j.pax.exam.TestContainer;
 import org.ops4j.pax.exam.TimeoutException;
 import org.ops4j.pax.exam.container.remote.RBCRemoteTarget;
+import org.ops4j.pax.exam.options.BootClasspathLibraryOption;
 import org.ops4j.pax.exam.options.BootDelegationOption;
 import org.ops4j.pax.exam.options.ProvisionOption;
 import org.ops4j.pax.exam.options.ServerModeOption;
 import org.ops4j.pax.exam.options.SystemPackageOption;
 import org.ops4j.pax.exam.options.SystemPropertyOption;
+import org.ops4j.pax.exam.options.UrlReference;
 import org.ops4j.pax.exam.options.extra.FeaturesScannerProvisionOption;
 import org.ops4j.pax.exam.options.extra.VMOption;
 import org.ops4j.pax.exam.rbc.client.RemoteBundleContextClient;
@@ -161,6 +164,7 @@ public class KarafTestContainer implements TestContainer {
 
             updateLogProperties(karafHome, subsystem);
             updateUserSetProperties(karafHome, subsystem);
+            copyBootClasspathLibraries(karafHome, subsystem);
             setupExamProperties(karafHome, subsystem);
             makeScriptsInBinExec(karafBin);
 
@@ -199,6 +203,19 @@ public class KarafTestContainer implements TestContainer {
             throw new RuntimeException("Problem starting container", e);
         }
         return this;
+    }
+
+    private void copyBootClasspathLibraries(File karafHome, ExamSystem subsystem) throws MalformedURLException,
+        IOException {
+        BootClasspathLibraryOption[] bootClasspathLibraryOptions =
+            subsystem.getOptions(BootClasspathLibraryOption.class);
+        for (BootClasspathLibraryOption bootClasspathLibraryOption : bootClasspathLibraryOptions) {
+            UrlReference libraryUrl = bootClasspathLibraryOption.getLibraryUrl();
+            FileUtils.copyURLToFile(
+                new URL(libraryUrl.getURL()),
+                createFileNameWithRandomPrefixFromUrlAtTarget(libraryUrl.getURL(), new File(karafHome + "/lib"),
+                    new String[]{ "jar" }));
+        }
     }
 
     @SuppressWarnings("rawtypes")
