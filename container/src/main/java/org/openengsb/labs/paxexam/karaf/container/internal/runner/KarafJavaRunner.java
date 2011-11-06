@@ -22,7 +22,7 @@ import java.io.File;
 /**
  * Very simple asynchronous implementation of Java Runner. Exec is being invoked in a fresh Thread.
  */
-public class KarafJavaRunner {
+public class KarafJavaRunner implements Runner {
 
     private InternalRunner runner;
 
@@ -30,6 +30,7 @@ public class KarafJavaRunner {
         runner = new InternalRunner();
     }
 
+    @Override
     public synchronized void
         exec(final String[] environment, final File karafBase, final String javaHome, final String[] javaOpts,
                 final String[] javaEndorsedDirs,
@@ -84,6 +85,7 @@ public class KarafJavaRunner {
         }.start();
     }
 
+    @Override
     public synchronized void shutdown() {
         runner.shutdown();
     }

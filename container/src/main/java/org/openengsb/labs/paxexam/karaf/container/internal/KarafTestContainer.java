@@ -55,7 +55,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulator;
 import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulatorFactory;
-import org.openengsb.labs.paxexam.karaf.container.internal.runner.KarafJavaRunner;
+import org.openengsb.labs.paxexam.karaf.container.internal.runner.Runner;
 import org.openengsb.labs.paxexam.karaf.options.DoNotModifyLogOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionBaseConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationConsoleOption;
@@ -95,7 +95,7 @@ public class KarafTestContainer implements TestContainer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KarafTestContainer.class);
 
-    private final KarafJavaRunner javaRunner;
+    private final Runner runner;
     private final RMIRegistry registry;
     private final ExamSystem system;
     private KarafDistributionBaseConfigurationOption framework;
@@ -109,11 +109,11 @@ public class KarafTestContainer implements TestContainer {
     private File targetFolder;
 
     public KarafTestContainer(ExamSystem system, RMIRegistry registry,
-            KarafDistributionBaseConfigurationOption framework) {
+            KarafDistributionBaseConfigurationOption framework, Runner runner) {
         this.framework = framework;
         this.registry = registry;
         this.system = system;
-        javaRunner = new KarafJavaRunner();
+        this.runner = runner;
     }
 
     @Override
@@ -192,7 +192,7 @@ public class KarafTestContainer implements TestContainer {
 
             long startedAt = System.currentTimeMillis();
 
-            javaRunner.exec(environment, karafBase, javaHome.toString(), javaOpts.toArray(new String[]{}),
+            runner.exec(environment, karafBase, javaHome.toString(), javaOpts.toArray(new String[]{}),
                 javaEndorsedDirs, javaExtDirs, karafHome.toString(), karafData, karafOpts,
                 opts.toArray(new String[]{}), classPath, main, options);
 
@@ -557,8 +557,8 @@ public class KarafTestContainer implements TestContainer {
                     remoteBundleContextClient.stop();
 
                 }
-                if (javaRunner != null) {
-                    javaRunner.shutdown();
+                if (runner != null) {
+                    runner.shutdown();
                 }
             }
             else {

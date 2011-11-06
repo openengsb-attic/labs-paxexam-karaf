@@ -20,17 +20,26 @@ package org.openengsb.labs.paxexam.karaf.container.internal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openengsb.labs.paxexam.karaf.container.internal.runner.KarafJavaRunner;
+import org.openengsb.labs.paxexam.karaf.container.internal.runner.NixRunner;
+import org.openengsb.labs.paxexam.karaf.container.internal.runner.WindowsRunner;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionBaseConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationOption;
+import org.openengsb.labs.paxexam.karaf.options.KarafDistributionKitConfigurationOption;
+import org.openengsb.labs.paxexam.karaf.options.KarafDistributionKitConfigurationOption.Platform;
 import org.ops4j.pax.exam.ExamSystem;
 import org.ops4j.pax.exam.TestContainer;
 import org.ops4j.pax.exam.TestContainerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class KarafTestContainerFactory
-        implements TestContainerFactory {
+public class KarafTestContainerFactory implements TestContainerFactory {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KarafTestContainer.class);
+    private static final int DEFAULTPORT = 21412;
+    private static final boolean IS_WINDOWS_OS = System.getProperty("os.name").toLowerCase().contains("windows");
 
     private RMIRegistry m_rmiRegistry;
-    private static final int DEFAULTPORT = 21412;
 
     public KarafTestContainerFactory() {
         m_rmiRegistry = new RMIRegistry(DEFAULTPORT, DEFAULTPORT + 1, DEFAULTPORT + 99).selectGracefully();
@@ -42,14 +51,30 @@ public class KarafTestContainerFactory
     @Override
     public TestContainer[] create(ExamSystem system)
     {
-        KarafDistributionBaseConfigurationOption[] options = system.getOptions(KarafDistributionConfigurationOption.class);
-        if (options == null || options.length == 0) {
-            throw new IllegalStateException(
-                "It is required to define which distribution you would like to use for your karaf distribution based test cases.");
-        }
         List<TestContainer> containers = new ArrayList<TestContainer>();
+        KarafDistributionKitConfigurationOption[] kitOptions =
+            system.getOptions(KarafDistributionKitConfigurationOption.class);
+        for (KarafDistributionKitConfigurationOption kitOption : kitOptions) {
+            if (kitOption.getPlatform().equals(Platform.WINDOWS)) {
+                if (IS_WINDOWS_OS) {
+                    containers.add(new KarafTestContainer(system, m_rmiRegistry, kitOption, new WindowsRunner(kitOption
+                        .getMakeExec(), kitOption.getExec())));
+                    continue;
+                }
+                LOGGER.info("Ignore windows settings on non windows platforms");
+            } else {
+                if (!IS_WINDOWS_OS) {
+                    containers.add(new KarafTestContainer(system, m_rmiRegistry, kitOption, new NixRunner(kitOption
+                        .getMakeExec(), kitOption.getExec())));
+                    continue;
+                }
+                LOGGER.info("Ignore non windows settings on windows platforms");
+            }
+        }
+        KarafDistributionBaseConfigurationOption[] options =
+            system.getOptions(KarafDistributionConfigurationOption.class);
         for (KarafDistributionBaseConfigurationOption testContainer : options) {
-            containers.add(new KarafTestContainer(system, m_rmiRegistry, testContainer));
+            containers.add(new KarafTestContainer(system, m_rmiRegistry, testContainer, new KarafJavaRunner()));
         }
         return containers.toArray(new TestContainer[containers.size()]);
     }

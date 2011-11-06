@@ -1,0 +1,81 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.openengsb.labs.paxexam.karaf.options;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.ops4j.pax.exam.options.MavenUrlReference;
+
+/**
+ * Option describing the karaf distribution to use; This option uses the specified scripts to run the environment
+ * depending on the platform. If a platform is defined and run on another platform it is simply ignored.
+ */
+public class KarafDistributionKitConfigurationOption extends KarafDistributionBaseConfigurationOption {
+
+    public enum Platform {
+        WINDOWS, NIX
+    }
+
+    private Platform platform;
+    private List<String> makeExec = new ArrayList<String>();
+    private String exec;
+
+    public KarafDistributionKitConfigurationOption(KarafDistributionBaseConfigurationOption base,
+            Platform platform) {
+        super(base);
+        this.platform = platform;
+    }
+
+    public KarafDistributionKitConfigurationOption(MavenUrlReference frameworkURLReference, String name,
+            String karafVersion, Platform platform) {
+        super(frameworkURLReference, name, karafVersion);
+        this.platform = platform;
+    }
+
+    public KarafDistributionKitConfigurationOption(String frameworkURL, String name, String karafVersion,
+            Platform platform) {
+        super(frameworkURL, name, karafVersion);
+        this.platform = platform;
+    }
+
+    public KarafDistributionKitConfigurationOption filesToMakeExecutable(String... platformRelativeFilePath) {
+        for (String platformRelativePath : platformRelativeFilePath) {
+            makeExec.add(platformRelativePath);
+        }
+        return this;
+    }
+
+    public KarafDistributionKitConfigurationOption executable(String platformRelativeFilePath) {
+        exec = platformRelativeFilePath;
+        return this;
+    }
+
+    public Platform getPlatform() {
+        return platform;
+    }
+
+    public List<String> getMakeExec() {
+        return makeExec;
+    }
+
+    public String getExec() {
+        return exec;
+    }
+
+}
