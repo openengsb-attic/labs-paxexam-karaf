@@ -55,6 +55,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulator;
 import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulatorFactory;
+import org.openengsb.labs.paxexam.karaf.container.internal.runner.KarafJavaRunner;
 import org.openengsb.labs.paxexam.karaf.options.DoNotModifyLogOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationConsoleOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileExtendOption;
