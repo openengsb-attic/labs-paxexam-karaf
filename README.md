@@ -27,7 +27,7 @@ org.openengsb.extensions.paxexam.karaf/container as your container instead of na
 From that point on there are minor differences. The extension tries to support the configuration options available 
 via PAXEXAM itself as good as possible. Still there are various additional configurations and some are handled 
 a little bit differently than in a "regular" PAXEXAM environment. The full usage of the framework could be
-found in the [https://github.com/openengsb/extensions-paxexam-karaf/wiki](Github Wiki Pages).
+found in the [https://github.com/openengsb/labs-paxexam-karaf/wiki](Github Wiki Pages).
 
 ## License
 
@@ -42,6 +42,6 @@ To build the project simply checkout the latest master or tag and do a `maven in
 
 Contributions are always welcomed in every form (documentation, ideas or code). For ideas or problems please
 simply use the [issues.openengsb.org](OpenEngSB Issue Tracker Extension Project).
-For documentation the [https://github.com/openengsb/extensions-paxexam-karaf/wiki](Github Wiki Pages) 
+For documentation the [https://github.com/openengsb/labs-paxexam-karaf/wiki](Github Wiki Pages) 
 and for code the Github Pull Request mechanism.
 
