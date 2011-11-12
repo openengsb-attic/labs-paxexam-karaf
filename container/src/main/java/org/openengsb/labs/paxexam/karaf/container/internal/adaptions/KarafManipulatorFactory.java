@@ -24,12 +24,15 @@ import org.osgi.framework.Version;
  */
 public final class KarafManipulatorFactory {
 
+    static final String VERSION_PATTERN ="[^0-9.]";
+
     private KarafManipulatorFactory() {
         // Not required for a final class
     }
 
     public static KarafManipulator createManipulator(String karafVersion) {
-        Version version = new Version(karafVersion);
+        String normalizedVersion = karafVersion.replace("_",".").replaceAll(VERSION_PATTERN,"");
+        Version version = new Version(normalizedVersion);
         if (version.getMajor() < 2 || version.getMajor() == 2 && version.getMinor() < 2) {
             throw new IllegalArgumentException("Karaf versions < 2.2.0 are not supported");
         }
