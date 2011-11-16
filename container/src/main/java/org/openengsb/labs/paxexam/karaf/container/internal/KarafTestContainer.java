@@ -482,6 +482,18 @@ public class KarafTestContainer implements TestContainer {
     }
 
     private void extractKarafDistribution(URL sourceDistribution, File targetFolder) throws IOException {
+        if (sourceDistribution.getProtocol().equals("file")) {
+            if (sourceDistribution.getFile().indexOf(".zip") > 0) {
+                extractZipDistribution(sourceDistribution, targetFolder);
+            } else if (sourceDistribution.getFile().indexOf(".tar.gz") > 0) {
+                extractTarGzDistribution(sourceDistribution, targetFolder);
+            }
+            else {
+                throw new IllegalStateException(
+                    "Unknow packaging of distribution; only zip or tar.gz could be handled.");
+            }
+            return;
+        }
         if (sourceDistribution.toExternalForm().indexOf("/zip") > 0) {
             extractZipDistribution(sourceDistribution, targetFolder);
         } else if (sourceDistribution.toExternalForm().indexOf("/tar.gz") > 0) {
