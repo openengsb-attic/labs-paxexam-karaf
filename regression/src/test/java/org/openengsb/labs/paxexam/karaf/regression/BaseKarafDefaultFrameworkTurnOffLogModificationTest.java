@@ -35,8 +35,8 @@ public class BaseKarafDefaultFrameworkTurnOffLogModificationTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.4/zip", "karaf",
-            "2.2.4"), doNotModifyLogConfiguration() };
+        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.5/zip", "karaf",
+            "2.2.5"), doNotModifyLogConfiguration() };
     }
 
     @Test

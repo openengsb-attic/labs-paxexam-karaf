@@ -38,7 +38,7 @@ public class BootClasspathLibraryOptionTest {
     @Configuration
     public Option[] config() {
         return new Option[]{
-            karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.4/zip", "karaf", "2.2.4"),
+            karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.5/zip", "karaf", "2.2.5"),
             bootClasspathLibrary("mvn:commons-naming/commons-naming-core/20031116.223527") };
     }
 

@@ -21,20 +21,24 @@ import static junit.framework.Assert.assertTrue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 
 /**
  * This one is deactivated till there is an SMX available with a newer karaf version
  */
-// @RunWith(JUnit4TestRunner.class)
-// @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
+@RunWith(JUnit4TestRunner.class)
+@ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
 public class BaseSmxTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.servicemix/apache-servicemix/4.3.0/zip",
-            "servicemix", "2.1.2") };
+        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.servicemix/apache-servicemix/4.4.0/zip",
+            "servicemix", "2.2.4") };
     }
 
     @Test

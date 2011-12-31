@@ -60,7 +60,7 @@ public class FileSourceTest {
             throw new RuntimeException(e);
         }
         return new Option[]{ karafDistributionConfiguration("file://" + createTempFile.toString(), "karaf",
-            "2.2.4") };
+            "2.2.5") };
     }
 
     // following method copied quick and dirty from commons utils to fix a maven problem

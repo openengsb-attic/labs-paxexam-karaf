@@ -35,7 +35,7 @@ public class BaseOpenEngSBTest {
     @Configuration
     public Option[] config() {
         return new Option[]{ karafDistributionConfiguration(
-            "mvn:org.openengsb.framework/openengsb-framework/2.1.1/zip", "openengsb", "2.2.4") };
+            "mvn:org.openengsb.framework/openengsb-framework/2.2.2/zip", "openengsb", "2.2.5") };
     }
 
     @Test

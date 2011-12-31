@@ -22,20 +22,25 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.ops4j.pax.exam.CoreOptions.maven;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 
 /**
  * This test should validate if the versionAsInProject tags work as expected.
  */
-// @RunWith(JUnit4TestRunner.class)
-// @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
+@RunWith(JUnit4TestRunner.class)
+@ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
 public class VersionAsInProjectServicemixTest {
 
     @Configuration
     public Option[] config() {
         return new Option[]{ karafDistributionConfiguration().frameworkUrl(
-            maven().groupId("org.apache.servicemix").artifactId("apache-servicemix").type("zip").versionAsInProject()) };
+            maven().groupId("org.apache.servicemix").artifactId("apache-servicemix").type("zip").versionAsInProject())
+            .karafVersion("2.2.4").name("servicemix") };
     }
 
     @Test

@@ -48,7 +48,7 @@ public class BaseKarafDefaultFrameworkDuplicatedPropertyEntryTest {
         return new Option[]{
             karafDistributionConfiguration().frameworkUrl(
                 maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject())
-                .karafVersion("2.2.4").name("Apache Karaf"),
+                .karafVersion("2.2.5").name("Apache Karaf"),
             editConfigurationFileExtend("etc/tests.cfg", "mykey", "myvalue1"),
             editConfigurationFileExtend("etc/tests.cfg", "mykey", "myvalue2") };
     }

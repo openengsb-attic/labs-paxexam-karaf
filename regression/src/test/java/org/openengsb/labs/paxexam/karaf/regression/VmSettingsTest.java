@@ -37,8 +37,8 @@ public class VmSettingsTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.4/zip", "karaf",
-            "2.2.4"), logLevel(LogLevel.TRACE), new VMOption("-Xmx1024m"), new VMOption("-XX:MaxPermSize=56m") };
+        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.5/zip", "karaf",
+            "2.2.5"), logLevel(LogLevel.TRACE), new VMOption("-Xmx1024m"), new VMOption("-XX:MaxPermSize=56m") };
     }
 
     @Test
