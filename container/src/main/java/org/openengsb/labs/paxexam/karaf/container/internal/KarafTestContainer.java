@@ -93,9 +93,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class KarafTestContainer implements TestContainer {
-    private static final String KARAF_TEST_CONTAINER = "KarafTestContainer.start";
-
     private static final Logger LOGGER = LoggerFactory.getLogger(KarafTestContainer.class);
+
+    private static final String KARAF_TEST_CONTAINER = "KarafTestContainer.start";
+    private static final String EXAM_INVOKER_PROPERTY = "pax.exam.invoker";
+    private static final String EXAM_INJECT_PROPERTY = "pax.exam.inject";
 
     private final Runner runner;
     private final RMIRegistry registry;
@@ -125,10 +127,10 @@ public class KarafTestContainer implements TestContainer {
 
             KarafExamSystemConfigurationOption[] internalConfigurationOptions =
                 system.getOptions(KarafExamSystemConfigurationOption.class);
-            Option invokerConfiguration = systemProperty("pax.exam.invoker").value("junit");
+            Option invokerConfiguration = systemProperty(EXAM_INVOKER_PROPERTY).value("junit");
             if (internalConfigurationOptions != null && internalConfigurationOptions.length != 0) {
                 invokerConfiguration =
-                    systemProperty("pax.exam.invoker").value(internalConfigurationOptions[0].getInvoker());
+                    systemProperty(EXAM_INVOKER_PROPERTY).value(internalConfigurationOptions[0].getInvoker());
             }
 
             ExamSystem subsystem = system.fork(
@@ -137,7 +139,7 @@ public class KarafTestContainer implements TestContainer {
                     systemProperty(RMI_PORT_PROPERTY).value("" + registry.getPort()),
                     systemProperty(RMI_NAME_PROPERTY).value(name),
                     invokerConfiguration,
-                    systemProperty("pax.exam.inject").value("true")
+                    systemProperty(EXAM_INJECT_PROPERTY).value("true")
                 ));
             target = new RBCRemoteTarget(name, registry.getPort(), subsystem.getTimeout());
 
