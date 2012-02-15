@@ -63,11 +63,13 @@ import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFi
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFilePutOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileReplacementOption;
+import org.openengsb.labs.paxexam.karaf.options.KarafExamSystemConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KeepRuntimeFolderOption;
 import org.openengsb.labs.paxexam.karaf.options.LogLevelOption;
 import org.openengsb.labs.paxexam.karaf.options.configs.CustomProperties;
 import org.openengsb.labs.paxexam.karaf.options.configs.FeaturesCfg;
 import org.ops4j.pax.exam.ExamSystem;
+import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.RelativeTimeout;
 import org.ops4j.pax.exam.TestAddress;
 import org.ops4j.pax.exam.TestContainer;
@@ -121,12 +123,20 @@ public class KarafTestContainer implements TestContainer {
         try {
             String name = system.createID(KARAF_TEST_CONTAINER);
 
+            KarafExamSystemConfigurationOption[] internalConfigurationOptions =
+                system.getOptions(KarafExamSystemConfigurationOption.class);
+            Option invokerConfiguration = systemProperty("pax.exam.invoker").value("junit");
+            if (internalConfigurationOptions != null && internalConfigurationOptions.length != 0) {
+                invokerConfiguration =
+                    systemProperty("pax.exam.invoker").value(internalConfigurationOptions[0].getInvoker());
+            }
+
             ExamSystem subsystem = system.fork(
                 options(
                     systemProperty(RMI_HOST_PROPERTY).value(registry.getHost()),
                     systemProperty(RMI_PORT_PROPERTY).value("" + registry.getPort()),
                     systemProperty(RMI_NAME_PROPERTY).value(name),
-                    systemProperty("pax.exam.invoker").value("junit"),
+                    invokerConfiguration,
                     systemProperty("pax.exam.inject").value("true")
                 ));
             target = new RBCRemoteTarget(name, registry.getPort(), subsystem.getTimeout());
