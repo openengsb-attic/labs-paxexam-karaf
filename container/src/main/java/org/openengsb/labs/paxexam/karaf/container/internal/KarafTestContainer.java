@@ -57,6 +57,7 @@ import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipu
 import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulatorFactory;
 import org.openengsb.labs.paxexam.karaf.container.internal.runner.Runner;
 import org.openengsb.labs.paxexam.karaf.options.DoNotModifyLogOption;
+import org.openengsb.labs.paxexam.karaf.options.ExamBundlesStartLevel;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionBaseConfigurationOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationConsoleOption;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionConfigurationFileExtendOption;
@@ -190,13 +191,20 @@ public class KarafTestContainer implements TestContainer {
             setupExamProperties(karafHome, subsystem);
             makeScriptsInBinExec(karafBin);
 
+            
+            int startLevel = Constants.DEFAULT_START_LEVEL;
+            ExamBundlesStartLevel examBundlesStartLevel = system.getSingleOption(ExamBundlesStartLevel.class);
+            if (examBundlesStartLevel != null) {
+                startLevel = examBundlesStartLevel.getStartLevel();
+            }
+            
             ExamFeaturesFile examFeaturesFile;
             if (framework.isUseDeployFolder()) {
                 copyReferencedArtifactsToDeployFolder(deploy, subsystem, fileEndings);
-                examFeaturesFile = new ExamFeaturesFile();
+                examFeaturesFile = new ExamFeaturesFile("", startLevel);
             } else {
                 StringBuilder extension = extractExtensionString(subsystem);
-                examFeaturesFile = new ExamFeaturesFile(extension.toString());
+                examFeaturesFile = new ExamFeaturesFile(extension.toString(), startLevel);
             }
             examFeaturesFile.writeToFile(featuresXmlFile);
 

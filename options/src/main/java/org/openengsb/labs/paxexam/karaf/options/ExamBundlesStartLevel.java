@@ -15,14 +15,26 @@
  * limitations under the License.
  */
 
-package org.openengsb.labs.paxexam.karaf.container.internal;
+package org.openengsb.labs.paxexam.karaf.options;
 
-public interface Constants {
+import org.ops4j.pax.exam.Option;
 
-    static final String FEATURES_CFG_LOCATION = "/etc/org.apache.karaf.features.cfg";
+/**
+ * This option allows to configure the start level of the bundles in the exam features descriptor.
+ */
+public class ExamBundlesStartLevel implements Option {
+    
+    private final int startLevel;
 
-    static final int SYSTEM_BUNDLE = 0;
+    /**
+     * Constructor
+     * @param startLevel The start level of the bundles in the generated exam features descriptor.
+     */
+    public ExamBundlesStartLevel(int startLevel) {
+        this.startLevel = startLevel;
+    }
 
-    static final int DEFAULT_START_LEVEL = 5;
-
+    public int getStartLevel() {
+        return startLevel;
+    }
 }
