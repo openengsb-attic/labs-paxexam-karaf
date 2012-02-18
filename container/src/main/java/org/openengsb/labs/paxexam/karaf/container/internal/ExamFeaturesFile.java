@@ -30,10 +30,14 @@ public class ExamFeaturesFile {
     private String featuresXml;
 
     public ExamFeaturesFile() {
-        this("");
+        this("", Constants.DEFAULT_START_LEVEL);
     }
 
-    public ExamFeaturesFile(String extension) {
+    public ExamFeaturesFile(String featuresXml) {
+        this(featuresXml, Constants.DEFAULT_START_LEVEL);
+    }
+
+    public ExamFeaturesFile(String extension, int startLevel) {
         featuresXml =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                     + "<features name=\"pax-exam-features-"
@@ -42,21 +46,21 @@ public class ExamFeaturesFile {
                     + "<feature name=\"exam\" version=\""
                     + Info.getPaxExamVersion()
                     + "\">\n"
-                    + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-extender-service/"
+                    + "<bundle start-level='"+startLevel+"'>mvn:org.ops4j.pax.exam/pax-exam-extender-service/"
                     + Info.getPaxExamVersion()
                     + "</bundle>\n"
                     + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-container-rbc/"
                     + Info.getPaxExamVersion()
                     + "</bundle>\n"
-                    + "<bundle>wrap:mvn:junit/junit/" + getJunitVersion() + "</bundle>\n"
-                    + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/" + Info.getPaxExamVersion()
+                    + "<bundle start-level='"+startLevel+"'>wrap:mvn:junit/junit/" + getJunitVersion() + "</bundle>\n"
+                    + "<bundle start-level='"+startLevel+"'>mvn:org.ops4j.pax.exam/pax-exam-invoker-junit/" + Info.getPaxExamVersion()
                     + "</bundle>\n"
-                    + "<bundle>mvn:org.openengsb.labs.paxexam.karaf/paxexam-karaf-options/"
+                    + "<bundle start-level='"+startLevel+"'>mvn:org.openengsb.labs.paxexam.karaf/paxexam-karaf-options/"
                     + getOptionsVersion()
                     + "</bundle>\n"
-                    + "<bundle>mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/" + getInjectionVersion()
+                    + "<bundle start-level='"+startLevel+"'>mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/" + getInjectionVersion()
                     + "</bundle>\n"
-                    + "<bundle>mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion() + "</bundle>\n"
+                    + "<bundle start-level='"+startLevel+"'>mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion() + "</bundle>\n"
                     + "</feature>\n"
                     + extension + "\n"
                     + "</features>";
