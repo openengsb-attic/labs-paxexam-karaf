@@ -23,12 +23,11 @@ import org.ops4j.pax.exam.Option;
  * This option allows to configure the start level of the bundles in the exam features descriptor.
  */
 public class ExamBundlesStartLevel implements Option {
-    
+
     private final int startLevel;
 
     /**
-     * Constructor
-     * @param startLevel The start level of the bundles in the generated exam features descriptor.
+     * Sets the start level of the bundles in the generated exam features descriptor.
      */
     public ExamBundlesStartLevel(int startLevel) {
         this.startLevel = startLevel;
