@@ -6,6 +6,10 @@ The 1.0.0 release does not differ in many ways from the previous 0.5.0 release e
 
 ### Features
 
+* [#10] Add new option to set start lvl of bundles deployed in setup features.xml
+
+With the deafault start lvls inthe initial features.xml it could happen from time to time that the exam bundle is not started correctly. In case those start lvls are set lower (or make completely configurable) it was possible to work around this problem.
+
 * [#6] Add new option to change used invoker
 
 In pax-exam the invoker is chosen by the pax.exam.invoker system property. By now the PaxExam Karaf extension uses only junit by default. With this extension you can now add "KarafDistributionOption.useOwnKarafExamSystemConfiguration("myCustomInvokerConfig")" to your options, overwriting the default junit configuration.
