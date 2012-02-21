@@ -17,6 +17,7 @@
 
 package org.openengsb.labs.paxexam.karaf.container.internal;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.editConfigurationFileExtend;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.rbc.Constants.RMI_HOST_PROPERTY;
@@ -140,7 +141,8 @@ public class KarafTestContainer implements TestContainer {
                     systemProperty(RMI_PORT_PROPERTY).value("" + registry.getPort()),
                     systemProperty(RMI_NAME_PROPERTY).value(name),
                     invokerConfiguration,
-                    systemProperty(EXAM_INJECT_PROPERTY).value("true")
+                    systemProperty(EXAM_INJECT_PROPERTY).value("true"),
+                    editConfigurationFileExtend("etc/system.properties", "jline.shutdownhook", "true")
                 ));
             target = new RBCRemoteTarget(name, registry.getPort(), subsystem.getTimeout());
 
@@ -191,13 +193,12 @@ public class KarafTestContainer implements TestContainer {
             setupExamProperties(karafHome, subsystem);
             makeScriptsInBinExec(karafBin);
 
-            
             int startLevel = Constants.DEFAULT_START_LEVEL;
             ExamBundlesStartLevel examBundlesStartLevel = system.getSingleOption(ExamBundlesStartLevel.class);
             if (examBundlesStartLevel != null) {
                 startLevel = examBundlesStartLevel.getStartLevel();
             }
-            
+
             ExamFeaturesFile examFeaturesFile;
             if (framework.isUseDeployFolder()) {
                 copyReferencedArtifactsToDeployFolder(deploy, subsystem, fileEndings);
