@@ -40,7 +40,7 @@ public class VersionAsInProjectServicemixTest {
     public Option[] config() {
         return new Option[]{ karafDistributionConfiguration().frameworkUrl(
             maven().groupId("org.apache.servicemix").artifactId("apache-servicemix").type("zip").versionAsInProject())
-            .karafVersion("2.2.4").name("servicemix") };
+            .karafVersion("2.2.5").name("servicemix") };
     }
 
     @Test

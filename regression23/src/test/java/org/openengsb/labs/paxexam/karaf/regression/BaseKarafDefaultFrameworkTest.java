@@ -28,17 +28,14 @@ import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 
-/**
- * This one is deactivated till there is an SMX available with a newer karaf version
- */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
-public class BaseSmxTest {
+public class BaseKarafDefaultFrameworkTest {
 
     @Configuration
     public Option[] config() {
-        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.servicemix/apache-servicemix/4.4.1/zip",
-            "servicemix", "2.2.5") };
+        return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.5/zip", "karaf",
+            "2.2.5") };
     }
 
     @Test
@@ -57,4 +54,19 @@ public class BaseSmxTest {
         assertTrue(true);
     }
 
+    @Test
+    public void test2() throws Exception {
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXxx");
+        assertTrue(true);
+    }
 }

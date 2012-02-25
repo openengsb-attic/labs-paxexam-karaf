@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package org.openengsb.labs.paxexam.karaf.container.internal.adaptions;
+package org.openengsb.labs.paxexam.karaf.container.internal.karafAdaptions;
 
+import org.openengsb.labs.paxexam.karaf.container.internal.util.NormalisedMavenVersionAdapter;
 import org.osgi.framework.Version;
 
 /**
@@ -24,15 +25,12 @@ import org.osgi.framework.Version;
  */
 public final class KarafManipulatorFactory {
 
-    static final String VERSION_PATTERN ="[^0-9.]";
-
     private KarafManipulatorFactory() {
         // Not required for a final class
     }
 
     public static KarafManipulator createManipulator(String karafVersion) {
-        String normalizedVersion = karafVersion.replace("_",".").replaceAll(VERSION_PATTERN,"");
-        Version version = new Version(normalizedVersion);
+        Version version = new NormalisedMavenVersionAdapter(karafVersion);
         if (version.getMajor() < 2 || version.getMajor() == 2 && version.getMinor() < 2) {
             throw new IllegalArgumentException("Karaf versions < 2.2.0 are not supported");
         }

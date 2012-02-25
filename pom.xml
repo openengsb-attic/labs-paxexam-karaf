@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <!--
 
@@ -24,7 +25,7 @@
   <parent>
     <groupId>org.openengsb</groupId>
     <artifactId>openengsb-root</artifactId>
-    <version>29</version>
+    <version>31-SNAPSHOT</version>
   </parent>
 
   <groupId>org.openengsb.labs.paxexam.karaf</groupId>
@@ -35,9 +36,10 @@
   <name>OPS4J Pax Exam :: Karaf</name>
 
   <properties>
-    <paxexam.version>2.3.0</paxexam.version>
-    <paxbase.version>1.2.3</paxbase.version>
-    <paxurl.version>1.3.5</paxurl.version>
+    <paxexam.version>2.4.0-SNAPSHOT</paxexam.version>
+    <paxbase.version>1.3.0</paxbase.version>
+    <paxswissbox.version>1.5.0</paxswissbox.version>
+    <paxurl.version>1.4.0.RC1</paxurl.version>
     <osgi.version>4.2.0</osgi.version>
     <junit.version>4.10</junit.version>
     <injection.bundle.version>1.0</injection.bundle.version>
@@ -47,6 +49,7 @@
     <module>options</module>
     <module>container</module>
     <module>regression</module>
+    <module>regression23</module>
   </modules>
 
   <scm>
@@ -62,25 +65,15 @@
     <url>http://issues.openengsb.org/jira/browse/LAB</url>
   </issueManagement>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <version>2.3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.servicemix.tooling</groupId>
-          <artifactId>depends-maven-plugin</artifactId>
-          <version>1.2</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-
   <dependencyManagement>
     <dependencies>
+      <!-- Internal Dependencies -->
+      <dependency>
+        <groupId>org.openengsb.labs.paxexam.karaf</groupId>
+        <artifactId>paxexam-karaf-options</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+      <!-- OSGi Dependencies -->
       <dependency>
         <groupId>org.osgi</groupId>
         <artifactId>org.osgi.core</artifactId>
@@ -92,6 +85,98 @@
         <version>${osgi.version}</version>
         <scope>test</scope>
       </dependency>
+      <!-- Logging API -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.6.4</version>
+      </dependency>
+      <!-- Test Frameworks -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+      <!-- Common Language Dependencies -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-compress</artifactId>
+        <version>1.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>1.3.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>10.0.1</version>
+      </dependency>
+      <!-- OPS4J Base Dependencies -->
+      <dependency>
+        <groupId>org.ops4j.base</groupId>
+        <artifactId>ops4j-base-lang</artifactId>
+        <version>${paxbase.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.base</groupId>
+        <artifactId>ops4j-base-net</artifactId>
+        <version>${paxbase.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.base</groupId>
+        <artifactId>ops4j-base-monitors</artifactId>
+        <version>${paxbase.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.base</groupId>
+        <artifactId>ops4j-base-store</artifactId>
+        <version>${paxbase.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.base</groupId>
+        <artifactId>ops4j-base-io</artifactId>
+        <version>${paxbase.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.base</groupId>
+        <artifactId>ops4j-base-spi</artifactId>
+        <version>${paxbase.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.base</groupId>
+        <artifactId>ops4j-base-util-property</artifactId>
+        <version>${paxbase.version}</version>
+      </dependency>
+      <!-- OPS4J Pax URL Dependencies -->
+      <dependency>
+        <groupId>org.ops4j.pax.url</groupId>
+        <artifactId>pax-url-aether</artifactId>
+        <version>${paxurl.version}</version>
+      </dependency>
+      <!-- OPS4J Swissbox Dependencies -->
+      <dependency>
+        <groupId>org.ops4j.pax.swissbox</groupId>
+        <artifactId>pax-swissbox-core</artifactId>
+        <version>${paxswissbox.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.pax.swissbox</groupId>
+        <artifactId>pax-swissbox-extender</artifactId>
+        <version>${paxswissbox.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.pax.swissbox</groupId>
+        <artifactId>pax-swissbox-lifecycle</artifactId>
+        <version>${paxswissbox.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.pax.swissbox</groupId>
+        <artifactId>pax-swissbox-framework</artifactId>
+        <version>${paxswissbox.version}</version>
+      </dependency>
+      <!-- Exam Dependencies -->
       <dependency>
         <groupId>org.ops4j.pax.exam</groupId>
         <artifactId>pax-exam</artifactId>
@@ -134,46 +219,6 @@
         <version>${paxexam.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.ops4j.base</groupId>
-        <artifactId>ops4j-base-lang</artifactId>
-        <version>${paxbase.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.ops4j.base</groupId>
-        <artifactId>ops4j-base-net</artifactId>
-        <version>${paxbase.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-compress</artifactId>
-        <version>1.3</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>1.3.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.ops4j.pax.url</groupId>
-        <artifactId>pax-url-mvn</artifactId>
-        <version>${paxurl.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-log4j12</artifactId>
-        <version>1.6.4</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>10.0.1</version>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
         <artifactId>geronimo-atinject_1.0_spec</artifactId>
         <version>${injection.bundle.version}</version>
@@ -183,8 +228,7 @@
         <artifactId>pax-exam-inject</artifactId>
         <version>${paxexam.version}</version>
       </dependency>
-
-      <!-- Test Frameworks -->
+      <!-- Karaf based distributions to test -->
       <dependency>
         <groupId>org.apache.karaf</groupId>
         <artifactId>apache-karaf</artifactId>
@@ -200,7 +244,7 @@
       <dependency>
         <groupId>org.apache.servicemix</groupId>
         <artifactId>apache-servicemix</artifactId>
-        <version>4.4.0</version>
+        <version>4.4.1</version>
         <type>zip</type>
       </dependency>
       <dependency>

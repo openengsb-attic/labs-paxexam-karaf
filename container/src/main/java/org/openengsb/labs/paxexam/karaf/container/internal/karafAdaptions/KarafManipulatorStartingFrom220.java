@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.openengsb.labs.paxexam.karaf.container.internal.adaptions;
+package org.openengsb.labs.paxexam.karaf.container.internal.karafAdaptions;
 
 /**
  * This manipulator is currently valid for all Karaf versions starting from 2.2.0 and above. In case that a higher

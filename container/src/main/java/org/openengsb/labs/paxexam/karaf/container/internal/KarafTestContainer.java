@@ -54,8 +54,10 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulator;
-import org.openengsb.labs.paxexam.karaf.container.internal.adaptions.KarafManipulatorFactory;
+import org.openengsb.labs.paxexam.karaf.container.internal.examAdaptions.ExamFeaturesFile;
+import org.openengsb.labs.paxexam.karaf.container.internal.examAdaptions.ExamFeaturesFileFactory;
+import org.openengsb.labs.paxexam.karaf.container.internal.karafAdaptions.KarafManipulator;
+import org.openengsb.labs.paxexam.karaf.container.internal.karafAdaptions.KarafManipulatorFactory;
 import org.openengsb.labs.paxexam.karaf.container.internal.runner.Runner;
 import org.openengsb.labs.paxexam.karaf.options.DoNotModifyLogOption;
 import org.openengsb.labs.paxexam.karaf.options.ExamBundlesStartLevel;
@@ -202,13 +204,12 @@ public class KarafTestContainer implements TestContainer {
             ExamFeaturesFile examFeaturesFile;
             if (framework.isUseDeployFolder()) {
                 copyReferencedArtifactsToDeployFolder(deploy, subsystem, fileEndings);
-                examFeaturesFile = new ExamFeaturesFile("", startLevel);
+                examFeaturesFile = ExamFeaturesFileFactory.createExamFeaturesFile("", startLevel);
             } else {
                 StringBuilder extension = extractExtensionString(subsystem);
-                examFeaturesFile = new ExamFeaturesFile(extension.toString(), startLevel);
+                examFeaturesFile = ExamFeaturesFileFactory.createExamFeaturesFile(extension.toString(), startLevel);
             }
             examFeaturesFile.writeToFile(featuresXmlFile);
-
             examFeaturesFile.adaptDistributionToStartExam(karafHome, featuresXmlFile);
 
             long startedAt = System.currentTimeMillis();

@@ -15,11 +15,26 @@
  * limitations under the License.
  */
 
-package org.openengsb.labs.paxexam.karaf.container.internal.adaptions;
+package org.openengsb.labs.paxexam.karaf.container.internal.util;
 
-/**
- * Core interface defining which functions need to be supported by which Karaf manipulators.
- */
-public interface KarafManipulator {
+import static junit.framework.Assert.assertEquals;
 
+import org.junit.Test;
+
+public class NormalisedMavenVersionAdapterTest {
+
+    @Test
+    public void testCreateMavenSnapshotVersion() throws Exception {
+        assertEquals("2.2.0", new NormalisedMavenVersionAdapter("2.2.0-SNAPSHOT").toString());
+    }
+
+    @Test
+    public void testCreateMavenRegularVersion() throws Exception {
+        assertEquals("2.2.0", new NormalisedMavenVersionAdapter("2.2.0").toString());
+    }
+
+    @Test
+    public void testCreateMavenShorterVersion() throws Exception {
+        assertEquals("2.2.0", new NormalisedMavenVersionAdapter("2.2").toString());
+    }
 }
