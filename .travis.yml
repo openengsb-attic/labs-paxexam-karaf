@@ -1,0 +1,8 @@
+language: java
+notifications:
+  email:
+      recipients:
+          - openengsb-notification@googlegroups.com
+      on_success: [change]
+      on_failure: [always]
+
