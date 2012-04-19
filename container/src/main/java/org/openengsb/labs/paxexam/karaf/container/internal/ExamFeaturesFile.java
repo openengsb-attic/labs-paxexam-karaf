@@ -46,6 +46,7 @@ public class ExamFeaturesFile {
                     + "<feature name=\"exam\" version=\""
                     + Info.getPaxExamVersion()
                     + "\">\n"
+                    + extension + "\n"
                     + "<bundle start-level='"+startLevel+"'>mvn:org.ops4j.pax.exam/pax-exam-extender-service/"
                     + Info.getPaxExamVersion()
                     + "</bundle>\n"
@@ -62,7 +63,6 @@ public class ExamFeaturesFile {
                     + "</bundle>\n"
                     + "<bundle start-level='"+startLevel+"'>mvn:org.ops4j.pax.exam/pax-exam-inject/" + Info.getPaxExamVersion() + "</bundle>\n"
                     + "</feature>\n"
-                    + extension + "\n"
                     + "</features>";
     }
 
