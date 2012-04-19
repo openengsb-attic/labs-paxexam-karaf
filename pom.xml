@@ -39,7 +39,7 @@
     <paxexam.version>2.4.0-SNAPSHOT</paxexam.version>
     <paxbase.version>1.3.0</paxbase.version>
     <paxswissbox.version>1.5.0</paxswissbox.version>
-    <paxurl.version>1.4.0-SNAPSHOT</paxurl.version>
+    <paxurl.version>1.4-SNAPSHOT</paxurl.version>
     <osgi.version>4.2.0</osgi.version>
     <junit.version>4.10</junit.version>
     <injection.bundle.version>1.0</injection.bundle.version>

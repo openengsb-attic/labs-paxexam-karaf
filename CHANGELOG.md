@@ -20,3 +20,9 @@ In pax-exam the invoker is chosen by the pax.exam.invoker system property. By no
 
 With the switch to the Github Issue tracker we needed a new way to add a changelog. This had been changed by adding this file.
 
+### Bugs
+
+* [#17] Correct creation of examfeatures.xml file
+
+There's the option to use the features.xml instead of the deploy folder. Nevetheless, the features.xml generated for this purpose was simply wrong. The problem had been fixed and an integration test had been added to validate the behavior.
+

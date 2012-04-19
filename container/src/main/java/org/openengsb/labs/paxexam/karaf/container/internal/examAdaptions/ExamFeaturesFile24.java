@@ -33,6 +33,7 @@ public class ExamFeaturesFile24 extends AbstractExamFeaturesFile {
                     + "<feature name=\"exam\" version=\""
                     + Info.getPaxExamVersion()
                     + "\">\n"
+                    + extension + "\n"
                     + "<bundle start-level='" + startLevel + "'>mvn:org.ops4j.base/ops4j-base-lang/"
                     + Info.getOps4jBaseVersion()
                     + "</bundle>\n"
@@ -90,7 +91,6 @@ public class ExamFeaturesFile24 extends AbstractExamFeaturesFile {
                     + "<bundle start-level='" + startLevel + "'>mvn:org.ops4j.pax.exam/pax-exam-inject/"
                     + Info.getPaxExamVersion() + "</bundle>\n"
                     + "</feature>\n"
-                    + extension + "\n"
                     + "</features>";
     }
 }
