@@ -58,11 +58,8 @@ public class BaseKarafDefaultFrameworkReplaceConfigFileTest {
                     unpackDirectory(new File("target/paxexam/unpack/")),
                 KarafDistributionOption.editConfigurationFilePut(CustomProperties.KARAF_FRAMEWORK, "equinox"),
                 KarafDistributionOption.keepRuntimeFolder() };
-        base =
-            combine(
-                base,
-                replaceConfigurationFile("etc/replaced.cfg", new File(
-                    "src/test/resources/replaced.cfg")));
+        base = combine(
+            base, replaceConfigurationFile("etc/replaced.cfg", new File("src/test/resources/replaced.cfg")));
         return base;
     }
 
