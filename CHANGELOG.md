@@ -26,3 +26,7 @@ With the switch to the Github Issue tracker we needed a new way to add a changel
 
 There's the option to use the features.xml instead of the deploy folder. Nevetheless, the features.xml generated for this purpose was simply wrong. The problem had been fixed and an integration test had been added to validate the behavior.
 
+* [#15] Fixed problem that scanFeatures and extending etc/org.apache.karaf.features.xml are not compabible
+
+The problem was that we initially wanted to avoid multible editions of the same file. Nevertheless, there are files where such modifications could come from various sources, such as etc/org.apache.karaf.features.xml. A method had been added to fix those problems in a quite general way.
+
