@@ -255,7 +255,7 @@ public class KarafTestContainer implements TestContainer {
         ProvisionOption[] provisionOptions = subsystem.getOptions(ProvisionOption.class);
         StringBuilder extension = new StringBuilder();
         for (ProvisionOption provisionOption : provisionOptions) {
-            if (provisionOption.getURL().startsWith("link")) {
+            if (provisionOption.getURL().startsWith("link") || provisionOption.getURL().startsWith("scan-features")) {
                 continue;
             }
             extension.append("<bundle>").append(provisionOption.getURL()).append("</bundle>\n");

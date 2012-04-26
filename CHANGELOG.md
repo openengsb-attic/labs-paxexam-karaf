@@ -30,3 +30,7 @@ There's the option to use the features.xml instead of the deploy folder. Nevethe
 
 The problem was that we initially wanted to avoid multible editions of the same file. Nevertheless, there are files where such modifications could come from various sources, such as etc/org.apache.karaf.features.xml. A method had been added to fix those problems in a quite general way.
 
+* [#18] useDeployFolder(false) together with scan features play nicley together now
+
+The problem was that the scanFeatures produces an url we simply don't want to have in our features.xml.
+
