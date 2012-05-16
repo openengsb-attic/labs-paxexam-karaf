@@ -16,6 +16,22 @@
  */
 package org.openengsb.labs.paxexam.karaf.regression;
 
+import static org.junit.Assert.assertEquals;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.scanFeatures;
+import static org.ops4j.pax.exam.CoreOptions.streamBundle;
+import static org.ops4j.pax.swissbox.tinybundles.core.TinyBundles.newBundle;
+import static org.ops4j.pax.swissbox.tinybundles.core.TinyBundles.withBnd;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption;
@@ -26,26 +42,11 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-
-import static org.junit.Assert.assertEquals;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.ops4j.pax.exam.CoreOptions.*;
-import static org.ops4j.pax.swissbox.tinybundles.core.TinyBundles.newBundle;
-import static org.ops4j.pax.swissbox.tinybundles.core.TinyBundles.withBnd;
-
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
 public class KarafWithBundleTest {
     @Test
     public void testService() throws Exception {
-
         URL url = new URL("http://localhost:9080/test/services");
         URLConnection conn = url.openConnection();
         conn.setDoOutput(true);
@@ -59,25 +60,26 @@ public class KarafWithBundleTest {
         assertEquals("Get a Wrong response", "This is a test", line);
         wr.close();
         rd.close();
-
-
     }
 
     @Configuration
     public Option[] config() {
         return new Option[]{ karafDistributionConfiguration("mvn:org.apache.karaf/apache-karaf/2.2.5/tar.gz", "karaf",
-                "2.2.5").unpackDirectory(new File("target/paxexam/unpack/")),
-                keepRuntimeFolder(),
-                scanFeatures(maven().groupId("org.apache.karaf.assemblies.features").artifactId("standard").type("xml")
-                        .classifier("features").version("2.2.5"), "war").start(),
-                // set the system property for pax web
-                KarafDistributionOption.editConfigurationFilePut("etc/system.properties","org.osgi.service.http.port", "9080"),
-                // create bundle to install
-                streamBundle(newBundle().add(org.openengsb.labs.paxexam.karaf.regression.supports.MyServlet.class)
-                        .add(org.openengsb.labs.paxexam.karaf.regression.supports.ServletActivator.class)
-                        .set(Constants.BUNDLE_SYMBOLICNAME, "MyBundleTest")
-                        .set(Constants.BUNDLE_ACTIVATOR, "org.openengsb.labs.paxexam.karaf.regression.supports.ServletActivator")
-                        .build(withBnd()))
+            "2.2.5").useDeployFolder(false).unpackDirectory(new File("target/paxexam/unpack/")),
+            keepRuntimeFolder(),
+            scanFeatures(maven().groupId("org.apache.karaf.assemblies.features").artifactId("standard").type("xml")
+                .classifier("features").version("2.2.5"), "war").start(),
+            // set the system property for pax web
+            KarafDistributionOption.editConfigurationFilePut("etc/org.ops4j.pax.web.cfg", "org.osgi.service.http.port",
+                "9080"),
+            // create bundle to install
+            streamBundle(newBundle()
+                .add(org.openengsb.labs.paxexam.karaf.regression.supports.MyServlet.class)
+                .add(org.openengsb.labs.paxexam.karaf.regression.supports.ServletActivator.class)
+                .set(Constants.BUNDLE_SYMBOLICNAME, "MyBundleTest")
+                .set(Constants.BUNDLE_ACTIVATOR,
+                    "org.openengsb.labs.paxexam.karaf.regression.supports.ServletActivator")
+                .build(withBnd()))
 
         };
     }
