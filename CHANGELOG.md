@@ -1,5 +1,13 @@
 # PAXEXAM Apache Karaf extension Changelog
 
+## v1.0.1
+
+### Bugs
+
+* [#24] Fixed a configuration problem in ManagementCfg preconfig
+
+The problem was that the constant name was simply wrong (as I assume a copy paste error...). Independently, working with the ManagementCfg should work now again as intended.
+
 ## v1.0.0
 
 The 1.0.0 release does not differ in many ways from the previous 0.5.0 release except for some minor improvements and new features. But since there had not been many new features in the mean time we've decided to signal the stability of the extension by pushing the version number to 1.0.0.
