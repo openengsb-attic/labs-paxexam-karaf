@@ -1,3 +1,10 @@
+# Deprecation Warning
+
+Development for this project had been completely moved into the Apache Karaf project. No more releases will
+follow here, but only @Karaf. The development is continued under the new group id: "org.apache.karaf.tooling.exam".
+While there's a new namespace and new artifact ids both versions are (at least for now) binary compatible. So
+upgrading from the latest paxexam-karaf version to the one provided by Karaf should be pretty painless.
+
 # Welcome to the PAXEXAM Apache Karaf extension
 
 ## Introduction
